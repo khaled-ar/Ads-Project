@@ -3,7 +3,9 @@
 use App\Models\{
     Car,
     Center,
-    DeliveryPrograms
+    City,
+    DeliveryPrograms,
+    Region
 };
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,10 @@ include base_path('routes/auth.php');
 Route::get('cars', fn () => ['data' => Car::all()]);
 // This route to get all avaliable delivery programs to use it in register request.
 Route::get('programs', fn () => ['data' => DeliveryPrograms::all()]);
+// This route to get all avaliable cities to use it in register request.
+Route::get('cities', fn () => ['data' => City::latest()->whereIsActive(1)->get()]);
+// This route to get all avaliable regions to use it in register request.
+Route::get('regions', fn () => ['data' => Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()]);
 
 Route::middleware('auth:sanctum')->group(function() {
 
@@ -49,6 +55,10 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.cars.php');
         // Delivery Programs Routes.
         include base_path('routes/dashboard.programs.php');
+        // Cities Routes.
+        include base_path('routes/dashboard.cities.php');
+        // Regions Routes.
+        include base_path('routes/dashboard.regions.php');
     });
 
     // Stackholders Routes.

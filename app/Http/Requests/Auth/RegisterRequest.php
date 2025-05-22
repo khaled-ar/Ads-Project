@@ -34,7 +34,7 @@ class RegisterRequest extends FormRequest
         return [
             'username' => ['required', 'string', 'between:3,15', 'unique:users,username'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'place_of_residence' => ['required', 'string', 'between:3,50'],
+            'place_of_residence' => ['required', 'string', 'exists:regions,name'],
             'work_status' => ['required', 'string', 'in:سائق حر,يعمل ضمن برنامج توصيل,لا يعمل ضمن أي برنامج'],
             'program_name' => ['required_if:work_status,يعمل ضمن برنامج توصيل', 'string', 'exists:delivery_programs,name'],
             'birth_date' => ['required', 'date'],
