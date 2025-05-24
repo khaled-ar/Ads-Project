@@ -5,6 +5,7 @@ use App\Models\{
     Center,
     City,
     DeliveryPrograms,
+    Lable,
     Region
 };
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::get('programs', fn () => ['data' => DeliveryPrograms::all()]);
 Route::get('cities', fn () => ['data' => City::latest()->whereIsActive(1)->get()]);
 // This route to get all avaliable regions to use it in register request.
 Route::get('regions', fn () => ['data' => Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()]);
+// This route to get all avaliable lables to use it in subscribe in ad request.
+Route::get('lables', fn () => ['data' => Lable::all()]);
 
 Route::middleware('auth:sanctum')->group(function() {
 
@@ -59,6 +62,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.cities.php');
         // Regions Routes.
         include base_path('routes/dashboard.regions.php');
+        // Lables Routes.
+        include base_path('routes/dashboard.lables.php');
     });
 
     // Stackholders Routes.
