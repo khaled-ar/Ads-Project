@@ -81,6 +81,10 @@ class Driver extends Model
         return $this->hasMany(DriverAd::class)->with('ad.user');
     }
 
+    public function activeAdsNumber() {
+        return $this->hasMany(DriverAd::class)->where('status', 'in_progress')->orWhere('status', 'approval_wating')->count();
+    }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class)->with('center');

@@ -10,6 +10,7 @@ class DriverAd extends Model
     use HasFactory;
 
     protected $table = 'drivers_ads';
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -27,7 +28,7 @@ class DriverAd extends Model
         return $this->belongsTo(Driver::class)->select([
             'id',
             'user_id',
-            'car_name',
+            'car_model',
             'car_year',
             'gender',
             'nationality'

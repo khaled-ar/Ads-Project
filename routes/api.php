@@ -64,6 +64,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.regions.php');
         // Lables Routes.
         include base_path('routes/dashboard.lables.php');
+        // Lables Routes.
+        include base_path('routes/dashboard.stackholders.php');
     });
 
     // Stackholders Routes.

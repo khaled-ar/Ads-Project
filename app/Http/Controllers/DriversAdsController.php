@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class DriversAdsController extends Controller
         return response()->json([
             'message' => null,
             'has_current' => $ads[0]->status == 'in_progress',
-            'total_ads' => $ads,
+            'total_ads' => $count,
             'total_profits' => $ads->sum('profits'),
             'data' => $ads
         ]);
@@ -28,7 +29,16 @@ class DriversAdsController extends Controller
         return $this->generalResponse($ads);
     }
 
-    public function subscribe() {
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request, Ad $ad)
+    {
+        return $this->generalResponse($ad->load('drivers.driver.user'));
+    }
 
+    public function subscribe(SubscribeInAdRequest $request, Ad $ad) {
+        $res = $request->store($ad);
+        return $this->generalResponse(null, $res[0], $res[1]);
     }
 }

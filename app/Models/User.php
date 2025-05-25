@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\Files;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,8 @@ class User extends Authenticatable
         'password',
         'email',
         'ip_address',
-        'image'
+        'image',
+        'role'
     ];
 
     /**
@@ -52,6 +54,18 @@ class User extends Authenticatable
 
     public function getImageUrlAttribute() {
         return $this->image ? asset('Images') . "/{$this->id}/" . $this->image : null;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            if(request('image')) {
+                $user->image = Files::moveFile(request('image'), "Images");
+                $user->save();
+            }
+        });
     }
 
     public function driver() {
