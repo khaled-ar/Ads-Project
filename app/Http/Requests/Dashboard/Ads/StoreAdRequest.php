@@ -44,6 +44,7 @@ class StoreAdRequest extends FormRequest
         $data = $this->except('images');
         $data['images'] = '';
         $ad = Ad::create($data);
+        $ad->update(['status' => 'قيد العمل']);
         return $ad->id;
     }
 }

@@ -27,7 +27,7 @@ class AdsController extends Controller
     public function store(StoreAdRequest $request)
     {
         $ad_id = $request->store();
-        return $this->generalResponse(['ad_id' => $ad_id], 'Ad Added Successfully', 201);
+        return $this->generalResponse(['ad_id' => $ad_id], 'Ad Added Successfully. Please Wait fo Admin Approval.', 201);
     }
 
     /**
