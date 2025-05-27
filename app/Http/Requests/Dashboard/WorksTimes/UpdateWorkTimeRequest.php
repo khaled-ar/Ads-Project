@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Centers;
+namespace App\Http\Requests\Dashboard\WorksTimes;
 
-use App\Models\Center;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCenterRequest extends FormRequest
+class UpdateWorkTimeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +22,13 @@ class StoreCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:200', 'unique:centers,name'],
-            'region_id' => ['required', 'integer', 'exists:regions,id'],
+            'works_days_id' => ['nullable', 'integer', 'exists:works_days,id'],
+            'start' => ['nullable', 'string'],
+            'end' => ['nullable', 'string'],
         ];
     }
 
-    public function store() {
-        Center::create($this->all());
+    public function update($work_time) {
+        $work_time->update($this->all());
     }
 }

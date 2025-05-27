@@ -16,7 +16,7 @@ class CentersController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Center::orderBy('status')->get());
+        return $this->generalResponse(Center::all());
     }
 
     /**

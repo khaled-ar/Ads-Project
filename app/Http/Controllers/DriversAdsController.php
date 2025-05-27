@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Drivers\ShowAdDetailsRequest;
 use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
 use Illuminate\Http\Request;
@@ -32,9 +33,9 @@ class DriversAdsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, Ad $ad)
+    public function show(ShowAdDetailsRequest $request, Ad $ad)
     {
-        return $this->generalResponse($ad->load('drivers.driver.user'));
+        return $this->generalResponse($request->appointements($ad));
     }
 
     public function subscribe(SubscribeInAdRequest $request, Ad $ad) {

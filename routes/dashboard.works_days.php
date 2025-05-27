@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\Dashboard\WorksDaysController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +12,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('appointments', AppointmentsController::class)->except('destroy');
-Route::patch('appointments/cancle/{appointment}', [AppointmentsController::class, 'cnacle']);
+Route::apiResource('works-days', WorksDaysController::class);
 

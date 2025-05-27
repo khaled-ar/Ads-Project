@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Appointments;
+namespace App\Http\Requests\Appointements;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyRequest extends FormRequest
+class GetSingleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

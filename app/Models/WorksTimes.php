@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends Model
+class WorksTimes extends Model
 {
     use HasFactory;
 
@@ -15,8 +15,4 @@ class Center extends Model
         'created_at',
         'updated_at'
     ];
-
-    public function works_days() {
-        return $this->hasMany(WorksDays::class)->with('works_times');
-    }
 }

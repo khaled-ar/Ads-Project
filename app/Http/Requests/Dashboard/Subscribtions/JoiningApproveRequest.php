@@ -32,11 +32,11 @@ class JoiningApproveRequest extends FormRequest
     public function approve($id) {
         DB::transaction(function() use($id) {
             $driver_ad = DriverAd::findOrFail($id);
-            $driver_ad->forceFill(['status' => 'in_progress'])->save();
+            $driver_ad->forceFill(['status' => 'appointement_booking'])->save();
             $driver = $driver_ad->driver;
-            $body = "لقد تم قبول طلب انضمامك الى الحملة الاعلانية: {$driver_ad->ad->name}";
+            $body = "لقد تم قبول طلب انضمامك الى الحملة الاعلانية، يرجى التوجه الى تفاصيل الحملة من اجل حجز موعد: {$driver_ad->ad->name}";
             $subject = 'طلب الانضمام الى الحملة الاعلانية';
-            $driver->user->notify(new DatabaseNotification($body, $subject, 'joining_approvel'));
+            $driver->user->notify(new DatabaseNotification($body, $subject, 'joining_approved'));
         });
     }
 }

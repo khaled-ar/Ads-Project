@@ -87,6 +87,6 @@ class Driver extends Model
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class)->with('center');
+        return $this->hasMany(Appointement::class)->with('center');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('driver_id')->constrained('drivers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('ad_id')->constrained('ads')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status', ['done', 'in_progress', 'approval_wating'])->default('approval_wating');
+            $table->enum('status', ['done', 'in_progress', 'approval_wating', 'appointement_booking'])->default('approval_wating');
             $table->float('profits');
             $table->timestamps();
         });

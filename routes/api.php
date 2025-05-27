@@ -34,12 +34,10 @@ Route::get('cities', fn () => ['data' => City::latest()->whereIsActive(1)->get()
 Route::get('regions', fn () => ['data' => Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()]);
 // This route to get all avaliable lables to use it in subscribe in ad request.
 Route::get('lables', fn () => ['data' => Lable::all()]);
+// This route to get all avaliable centers to use it in ad adding request.
+Route::get('centers', fn () => ['data' => Center::whereRegionId(request('region_id'))->get()]);
 
 Route::middleware('auth:sanctum')->group(function() {
-
-    // This route to get all avaliable centers to use it in ad adding request.
-    Route::get('centers', fn () => ['data' => Center::whereStatus('مفتوح')->get()]);
-    // This route to get all avaliable cars to use it in register request.
 
     // Appointments Routes.
     include base_path('routes/appointments.php');
@@ -66,6 +64,10 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.lables.php');
         // Lables Routes.
         include base_path('routes/dashboard.stackholders.php');
+        // Works Days Routes.
+        include base_path('routes/dashboard.works_days.php');
+        // Works Times Routes.
+        include base_path('routes/dashboard.works_times.php');
     });
 
     // Stackholders Routes.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Appointments;
+namespace App\Http\Requests\Appointements;
 
 use App\Notifications\DatabaseNotification;
 use Illuminate\Foundation\Http\FormRequest;
@@ -30,10 +30,10 @@ class UpdateRequest extends FormRequest
 
     public function update($appointment) {
         return DB::transaction(function() use ($appointment){
-            $appointment->forceFill(['status' => 'مجدول'])->save();
+            $appointment->forceFill(['status' => 'to do'])->save();
             $driver = $appointment->driver->user;
             $subject = "لقد تمت الموافقة على حجز موعد جديد، يرجى الاطلاع";
-            $body = "معرف الموعد {$appointment->id}, اسم المركز {$appointment->center->name}";
+            $body = 'يرجى التوجه الى المركز في الموعد المحدد، يمكنك الاطلاع على مواعيدك من خلال صفحة المواعيد الحاصة بك';
             $driver->notify(new DatabaseNotification($body, $subject, 'appointment_approval'));
             return $appointment->id;
         });

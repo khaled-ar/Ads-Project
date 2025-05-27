@@ -2,8 +2,12 @@
 
 namespace App\Http\Requests\Dashboard\Stackholders;
 
-use App\Models\User;
+use App\Models\{
+    Stackholders,
+    User
+};
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 
 class StoreStackholderRequest extends FormRequest
@@ -27,6 +31,9 @@ class StoreStackholderRequest extends FormRequest
             'email' => ['required', 'email', 'unique:users,email'],
             'username' => ['required', 'string', 'unique:users,username'],
             'image' => ['nullable', 'image', 'mimes:png,jpg', 'max:4096'],
+            'location' => ['required', 'string'],
+            'number' => ['required', 'string'],
+            'commercial_number' => ['required', 'string'],
             'password' => ['required', 'string',
                 Password::min(8)
                     ->max(25)
@@ -39,10 +46,19 @@ class StoreStackholderRequest extends FormRequest
     }
 
     public function store() {
-        User::create(array_merge($this->validated(), [
-            'ip_address' => $this->ip(),
-            'role' => 'معلن'
-        ]));
-        return 'Stackholder Account Created Successfully.';
+        return DB::transaction(function() {
+            $user = User::create([
+                'username' => $this->username,
+                'password' => $this->password,
+                'email'    => $this->email,
+                'ip_address' => $this->ip(),
+                'role' => 'معلن',
+                'account_status' => 'active'
+            ]);
+            $data = $this->except(['username', 'password', 'password', 'email', 'ip_address', 'role']);
+            $data['user_id'] = $user->id;
+            Stackholders::create($data);
+            return 'Stackholder Account Created Successfully.';
+        });
     }
 }

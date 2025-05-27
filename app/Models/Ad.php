@@ -46,7 +46,7 @@ class Ad extends Model
 
     public function getIsFullAttribute() {
         $drivers_number = $this->drivers_number;
-        $current_number = DriverAd::whereAdId($this->id)->count();
+        $current_number = DriverAd::whereAdId($this->id)->whereStatus('appointement_booking')->count();
         return $drivers_number <= $current_number;
     }
 
