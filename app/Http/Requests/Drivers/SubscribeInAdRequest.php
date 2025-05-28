@@ -28,7 +28,7 @@ class SubscribeInAdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'lables' => ['required', 'string']
         ];
     }
 
@@ -40,7 +40,7 @@ class SubscribeInAdRequest extends FormRequest
                 return ['You cannot subscribe in this ad because you already has subscribtion.', 400];
             }
 
-            $driver->driver->ads()->create(['ad_id' => $ad->id, 'profits' => 0]);
+            $driver->driver->ads()->create(['ad_id' => $ad->id, 'profits' => 0, 'lables' => $this->lables]);
             $admin = User::whereRole('ادمن')->first();
             $body = "لقد قام {$driver->username} بتقديم طلب انضمام الى الحملة {$ad->name}";
             $subject = 'طلب انضمام جديد';

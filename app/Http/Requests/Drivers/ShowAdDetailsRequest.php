@@ -31,6 +31,11 @@ class ShowAdDetailsRequest extends FormRequest
     public function appointements($ad) {
         $ad->load('drivers.driver.user');
         $driver_ad = request()->user()->driver->ads()->whereAdId($ad->id)->first();
+        if(! $driver_ad) {
+            $ad['appointements'] = null;
+            return $ad;
+        }
+
         $centers = Center::whereIn('name', explode(',', $ad->centers))->get();
         $centers = AppointementsResource::collection($centers);
         $ad['appointements'] = $driver_ad->status == 'appointement_booking' ? $centers : null;

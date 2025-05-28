@@ -37,7 +37,6 @@ class StoreRequest extends FormRequest
             'center_name' => ['required', 'string'],
             'works_days_id' => ['required', 'integer', 'exists:works_days,id'],
             'time' => ['required', 'string'],
-            'lables' => ['required', 'string']
         ];
     }
 

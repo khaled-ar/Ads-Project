@@ -25,6 +25,7 @@ class StoreCenterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:200', 'unique:centers,name'],
             'region_id' => ['required', 'integer', 'exists:regions,id'],
+            'location' => ['required', 'string'],
         ];
     }
 
