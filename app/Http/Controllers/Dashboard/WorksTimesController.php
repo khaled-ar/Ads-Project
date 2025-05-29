@@ -22,8 +22,7 @@ class WorksTimesController extends Controller
      */
     public function store(StoreWorkTimeRequest $request)
     {
-        $request->store();
-        return $this->generalResponse(null, 'Work Time Added Successfully', 201);
+        return $this->generalResponse($request->store(), 'Work Time Added Successfully', 201);
     }
 
     /**

@@ -23,8 +23,7 @@ class WorksDaysController extends Controller
      */
     public function store(StoreWorkDayRequest $request)
     {
-        $request->store();
-        return $this->generalResponse(null, 'Work Day Added Successfully', 201);
+        return $this->generalResponse($request->store(), 'Work Day Added Successfully', 201);
     }
 
     /**

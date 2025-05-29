@@ -56,12 +56,13 @@ class StoreRequest extends FormRequest
             $center_id = Center::whereName($this->center_name)->first()->id;
             $this->merge(['driver_id' => $driver_id, 'user_id' =>  $ad->user_id, 'center_id' => $center_id]);
             $appointment = Appointement::create($this->all());
+            $appointment->ForceFill(['status' => 'to do'])->save();
 
             $admin = User::whereRole('ادمن')->first();
             $subject = "لقد تم حجز موعد جديد، يرجى الاطلاع";
             $body = "معرف الحملة الاعلانية {$appointment->id}, معرف السائق {$driver_id}";
             Notification::send([$admin, $ad->user], new DatabaseNotification($body, $subject, 'new_appointement'));
-            return ['Your appointment has been booked successfully, please wait for admin approval.', 201];
+            return ['Your appointment has been booked successfully.', 201];
         });
     }
 

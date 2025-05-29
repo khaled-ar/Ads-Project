@@ -32,6 +32,7 @@ class AppointementsResource extends JsonResource
             // Fetch appointments for the current day and center
             $appointments = Appointement::where('works_days_id', $day->id)
                 ->where('center_id', $this->center->id)
+                ->where('status', '<>', 'canceled')
                 ->pluck('time')
                 ->toArray();
 

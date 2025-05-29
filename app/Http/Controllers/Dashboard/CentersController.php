@@ -24,8 +24,7 @@ class CentersController extends Controller
      */
     public function store(StoreCenterRequest $request)
     {
-        $request->store();
-        return $this->generalResponse(null, 'Center Added Successfully', 201);
+        return $this->generalResponse($request->store(), 'Center Added Successfully', 201);
     }
 
     /**

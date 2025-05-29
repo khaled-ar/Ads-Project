@@ -30,6 +30,7 @@ class StoreWorkTimeRequest extends FormRequest
     }
 
     public function store() {
-        WorksTimes::create($this->all());
+        $time = WorksTimes::create($this->all());
+        return ['work_time_id' => $time->id];
     }
 }

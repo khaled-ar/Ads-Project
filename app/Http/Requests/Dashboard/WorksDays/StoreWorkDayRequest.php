@@ -29,6 +29,7 @@ class StoreWorkDayRequest extends FormRequest
     }
 
     public function store() {
-        WorksDays::create($this->all());
+        $day = WorksDays::create($this->all());
+        return ['work_day_id' => $day->id];
     }
 }

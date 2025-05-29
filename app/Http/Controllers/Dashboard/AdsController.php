@@ -8,6 +8,8 @@ use App\Http\Requests\Dashboard\Ads\{
     UpdateAdRequest
 };
 use App\Models\Ad;
+use App\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\DB;
 
 class AdsController extends Controller
 {
@@ -17,6 +19,11 @@ class AdsController extends Controller
     public function index()
     {
         return $this->generalResponse(Ad::with(['user', 'drivers.driver'])->get());
+    }
+
+    public function waiting_approval()
+    {
+        return $this->generalResponse(Ad::with(['user', 'drivers.driver'])->whereStatus('بانتظار الموافقة')->get());
     }
 
     /**
@@ -53,5 +60,21 @@ class AdsController extends Controller
     {
         $dash_ad->delete();
         return $this->generalResponse(null, 'Ad Deleted Successfully');
+    }
+
+    public function approve(Ad $dash_ad) {
+        return DB::transaction(function () use($dash_ad) {
+            $dash_ad->update(['status' => 'قيد العمل']);
+            $dash_ad->user->notify(new DatabaseNotification('تهانينا لقد تم قبول الحملة من قبل الادمن', 'قبول الحملة', 'ad_approved'));
+            return $this->generalResponse(null, 'Ad Approved Successfully');;
+        });
+    }
+
+    public function reject(Ad $dash_ad) {
+        return DB::transaction(function () use($dash_ad) {
+            $dash_ad->update(['status' => 'مرفوض', 'notes' => request('notes')]);
+            $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected'));
+            return $this->generalResponse(null, 'Ad Rejected Successfully');;
+        });
     }
 }

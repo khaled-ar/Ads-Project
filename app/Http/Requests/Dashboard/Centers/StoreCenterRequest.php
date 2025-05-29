@@ -30,6 +30,7 @@ class StoreCenterRequest extends FormRequest
     }
 
     public function store() {
-        Center::create($this->all());
+        $center = Center::create($this->all());
+        return ['center_id' => $center->id];
     }
 }
