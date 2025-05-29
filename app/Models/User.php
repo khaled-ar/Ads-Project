@@ -25,7 +25,8 @@ class User extends Authenticatable
         'ip_address',
         'image',
         'role',
-        'account_status'
+        'account_status',
+        'notes'
     ];
 
     /**

@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('drivers', DriversController::class);
 Route::patch('accounts/approve/{driver}', [DriversController::class, 'approve']);
+Route::patch('accounts/reject/{driver}', [DriversController::class, 'reject']);
+Route::get('accounts/inactive-users', [DriversController::class, 'inactive_users']);
 

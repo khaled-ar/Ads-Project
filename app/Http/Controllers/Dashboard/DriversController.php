@@ -24,7 +24,12 @@ class DriversController extends Controller
      */
     public function index()
     {
-        $drivers = DriversResource::collection(User::whereRole('سائق')->with('driver')->orderBy('account_status')->get());
+        $drivers = User::with('driver')->whereRole('سائق')->orderBy('account_status')->get();
+        return $this->generalResponse($drivers);
+    }
+
+    public function inactive_users() {
+        $drivers = User::with('driver')->whereRole('سائق')->whereAccountStatus('inactive')->get();
         return $this->generalResponse($drivers);
     }
 
@@ -70,6 +75,17 @@ class DriversController extends Controller
             ]);
             $driver->user->notify(new DatabaseNotification('تهانينا لقد تم قبول حسابك من قبل الادمن', 'طلب انضمام', 'account_status'));
             return $this->generalResponse(null, 'Account Approved Successfully');;
+        });
+    }
+
+        public function reject(Driver $driver) {
+        return DB::transaction(function () use($driver) {
+            $driver->user()->update([
+                'account_status' => 'rejected',
+                'notes' => request('notes')
+            ]);
+            $driver->user->notify(new DatabaseNotification('للاسف لقد تم رفض حسابك من قبل الادمن', 'طلب انضمام', 'account_status'));
+            return $this->generalResponse(null, 'Account Rejected Successfully');;
         });
     }
 }
