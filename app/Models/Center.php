@@ -19,4 +19,8 @@ class Center extends Model
     public function works_days() {
         return $this->hasMany(WorksDays::class)->with('works_times');
     }
+
+    public function appointements() {
+        return $this->hasMany(Appointement::class)->with(['driver.user', 'work_day']);
+    }
 }

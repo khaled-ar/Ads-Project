@@ -7,6 +7,7 @@ use App\Http\Requests\Dashboard\Centers\{
     UpdateCenterRequest,
 };
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Dashboard\Centers\GetSingleCenter;
 use App\Models\Center;
 
 class CentersController extends Controller
@@ -32,7 +33,7 @@ class CentersController extends Controller
      */
     public function show(Center $center)
     {
-        return $this->generalResponse($center);
+        return $this->generalResponse(new GetSingleCenter($center->load('appointements')));
     }
 
     /**

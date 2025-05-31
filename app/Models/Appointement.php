@@ -27,4 +27,8 @@ class Appointement extends Model
     public function ad() {
         return $this->belongsTo(Ad::class);
     }
+
+    public function work_day() {
+        return $this->hasOne(WorksDays::class, 'id', 'works_days_id')->select(['id', 'day']);
+    }
 }
