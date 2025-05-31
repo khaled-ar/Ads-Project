@@ -68,7 +68,8 @@ class RegisterRequest extends FormRequest
                 'username' => $this->username,
                 'password' => $this->password,
                 'email'    => $this->email,
-                'ip_address' => $this->ip()
+                'ip_address' => $this->ip(),
+                'notes' => ''
             ]);
             $data = $this->except(['username', 'password', 'program_name', 'email', 'ip_address']);
             $data['user_id'] = $user->id;
