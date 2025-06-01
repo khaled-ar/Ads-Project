@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Subscribtions\JoiningApproveRequest;
+use App\Http\Requests\Dashboard\Subscribtions\JoiningRejectRequest;
+use App\Http\Resources\GetSubscribtions;
+use App\Models\DriverAd;
 use Illuminate\Http\Request;
 
 class SubscribtionsController extends Controller
@@ -13,7 +16,8 @@ class SubscribtionsController extends Controller
      */
     public function index()
     {
-        //
+        $subscribtions = DriverAd::whereAdId(request('ad_id'))->with('driver.user')->get();
+        return $this->generalResponse(GetSubscribtions::collection($subscribtions));
     }
 
     /**
@@ -38,6 +42,15 @@ class SubscribtionsController extends Controller
     public function update(JoiningApproveRequest $request, string $id)
     {
         $request->approve($id);
+        return $this->generalResponse(null, 'Done Successfully');
+    }
+
+        /**
+     * Update the specified resource in storage.
+     */
+    public function reject(JoiningRejectRequest $request, string $id)
+    {
+        $request->reject($id);
         return $this->generalResponse(null, 'Done Successfully');
     }
 

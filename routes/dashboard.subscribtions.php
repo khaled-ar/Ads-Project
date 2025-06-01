@@ -13,4 +13,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('subscriptions', SubscribtionsController::class);
+Route::patch('subscriptions/reject/{id}', [SubscribtionsController::class, 'reject']);
+
 
