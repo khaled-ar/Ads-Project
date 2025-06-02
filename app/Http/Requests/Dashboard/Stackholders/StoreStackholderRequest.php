@@ -53,7 +53,8 @@ class StoreStackholderRequest extends FormRequest
                 'email'    => $this->email,
                 'ip_address' => $this->ip(),
                 'role' => 'معلن',
-                'account_status' => 'active'
+                'account_status' => 'active',
+                'notes' => ''
             ]);
             $data = $this->except(['username', 'password', 'password', 'email', 'ip_address', 'role']);
             $data['user_id'] = $user->id;
