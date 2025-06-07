@@ -27,6 +27,7 @@ Route::prefix('auth')
         // Update Driver Profile Route.
         Route::patch('update-driver-profile', 'update_driver_profile')->middleware('auth:sanctum');
         Route::delete('logout', 'logout')->middleware('auth:sanctum');
+        Route::delete('delete-account', 'delete_account')->middleware('auth:sanctum');
     });
 
 Route::controller(EmailController::class)

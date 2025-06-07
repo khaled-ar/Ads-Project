@@ -39,4 +39,10 @@ class AuthController extends Controller
         request()->user()->tokens()->delete();
         return $this->generalResponse(null, 'Logged Out Successfully.', 200);
     }
+
+    public function delete_account(Request $request) {
+        $user = $request->user();
+        $user->delete();
+        return $this->generalResponse(null, 'Account Deleted Successfully.', 200);
+    }
 }

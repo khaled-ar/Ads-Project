@@ -50,6 +50,9 @@ class CentersController extends Controller
      */
     public function destroy(Center $center)
     {
+        if($center->active_appointements()->count()) {
+            return $this->generalResponse(null, 'You Cannot Delete This Center. This Center Already Has Active Appointements.', 400);
+        }
         $center->delete();
         return $this->generalResponse(null, 'Center Deleted Successfully', 200);
     }

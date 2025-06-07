@@ -23,4 +23,8 @@ class Center extends Model
     public function appointements() {
         return $this->hasMany(Appointement::class)->with(['driver.user', 'work_day']);
     }
+
+    public function active_appointements() {
+        return $this->hasMany(Appointement::class)->whereStatus('to do');
+    }
 }

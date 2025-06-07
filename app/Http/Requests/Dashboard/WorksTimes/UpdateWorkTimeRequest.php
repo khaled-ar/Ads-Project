@@ -28,7 +28,7 @@ class UpdateWorkTimeRequest extends FormRequest
         ];
     }
 
-    public function update($work_time) {
-        $work_time->update($this->all());
+    public function update($works_time) {
+        $works_time->update($this->all());
     }
 }

@@ -75,4 +75,13 @@ class Ad extends Model
     public function drivers() {
         return $this->hasMany(DriverAd::class)->whereStatus('in_progress');
     }
+
+    public function scopeFilter($query) {
+        $region = request('region') ?? request()->user()->driver->place_of_residence;
+        $query->where('regions', 'like', "%$region%");
+        if(request('km_price')) {
+            $query->where('km_price', '>=', request('km_price'));
+        }
+        return $query;
+    }
 }

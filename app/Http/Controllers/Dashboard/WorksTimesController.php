@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\WorksTimes\StoreWorkTimeRequest;
+use App\Http\Requests\Dashboard\WorksTimes\{
+    StoreWorkTimeRequest,
+    UpdateWorkTimeRequest
+};
 use App\Models\WorksTimes;
 use Illuminate\Http\Request;
 
@@ -36,9 +39,10 @@ class WorksTimesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateWorkTimeRequest $request, WorksTimes $works_time)
     {
-        //
+        $request->update($works_time);
+        return $this->generalResponse(null, 'Work Time Updated Successfully', 200);
     }
 
     /**
