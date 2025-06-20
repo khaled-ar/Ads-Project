@@ -18,7 +18,7 @@ class AdsController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Ad::with(['user', 'drivers.driver'])->get());
+        return $this->generalResponse(Ad::status()->with(['user', 'drivers.driver'])->get());
     }
 
     public function waiting_approval()

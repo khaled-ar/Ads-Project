@@ -84,4 +84,9 @@ class Ad extends Model
         }
         return $query;
     }
+
+    public function scopeStatus($query) {
+        $query->whereStatus(request('status'));
+        return $query;
+    }
 }
