@@ -1,11 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Stackholders;
 
-use App\Http\Requests\Dashboard\Subscribtions\{
-    JoiningApproveRequest,
-    JoiningRejectRequest
-};
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GetSubscribtions;
 use App\Models\DriverAd;
@@ -41,19 +37,9 @@ class SubscribtionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(JoiningApproveRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $request->approve($id);
-        return $this->generalResponse(null, 'Done Successfully');
-    }
-
-        /**
-     * Update the specified resource in storage.
-     */
-    public function reject(JoiningRejectRequest $request, string $id)
-    {
-        $request->reject($id);
-        return $this->generalResponse(null, 'Done Successfully');
+        //
     }
 
     /**

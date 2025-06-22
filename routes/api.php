@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Stackholders\SubscribtionsController;
 use App\Models\{
     Car,
     Center,
@@ -74,6 +75,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('stackholders')->middleware('stackholder')->group(function() {
         // Ads Routes.
         include base_path('routes/ads.php');
+        // Subscribtions Route
+        Route::get('subscribtions', [SubscribtionsController::class, 'index']);
     });
 
     // Drivers Routes.
