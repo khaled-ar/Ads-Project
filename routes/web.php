@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\LandingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::controller(LandingController::class)->group(function() {
+    Route::get('landing', 'show')->name('landing.show');
+    Route::post('contact', 'submit_contact_form')->name('landing.submit');
 });

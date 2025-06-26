@@ -36,9 +36,9 @@ class SubscribeInAdRequest extends FormRequest
 
         return DB::transaction(function() use($ad){
             $driver = $this->user();
-            if($driver->driver->activeAdsNumber()) {
+            /*if($driver->driver->activeAdsNumber()) {
                 return ['You cannot subscribe in this ad because you already has subscribtion.', 400];
-            }
+            }*/
 
             $driver->driver->ads()->create(['ad_id' => $ad->id, 'profits' => 0, 'lables' => $this->lables]);
             $admin = User::whereRole('ادمن')->first();
@@ -48,6 +48,5 @@ class SubscribeInAdRequest extends FormRequest
             return ['Subscribtion Requested Successfully, Please Wait for Admin Approval.', 201];
         });
     }
-
 
 }

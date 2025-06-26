@@ -4,9 +4,12 @@ namespace App\Http\Requests\Dashboard\Ads;
 
 use App\Models\Ad;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\QrService;
+use Illuminate\Support\Facades\DB;
 
 class StoreAdRequest extends FormRequest
 {
+    public function __construct(private QrService $qr) {}
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -40,11 +43,15 @@ class StoreAdRequest extends FormRequest
         ];
     }
 
-    public function store() {
-        $data = $this->except('images');
-        $data['images'] = '';
-        $ad = Ad::create($data);
-        $ad->update(['status' => 'قيد العمل']);
-        return $ad->id;
+    public function store()
+    {
+        return DB::transaction(function () {
+            $data = $this->except('images');
+            $data['images'] = '';
+            $ad = Ad::create($data);
+            $ad->update(['status' => 'قيد العمل']);
+            $this->qr->generateQrCode($ad);
+            return $ad->id;
+        });
     }
 }

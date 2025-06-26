@@ -9,10 +9,15 @@ use App\Http\Requests\Dashboard\Ads\{
 };
 use App\Models\Ad;
 use App\Notifications\DatabaseNotification;
+use App\Services\QrService;
 use Illuminate\Support\Facades\DB;
 
 class AdsController extends Controller
 {
+    public function __construct(private QrService $qr)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -66,7 +71,8 @@ class AdsController extends Controller
         return DB::transaction(function () use($dash_ad) {
             $dash_ad->update(['status' => 'قيد العمل']);
             $dash_ad->user->notify(new DatabaseNotification('تهانينا لقد تم قبول الحملة من قبل الادمن', 'قبول الحملة', 'ad_approved'));
-            return $this->generalResponse(null, 'Ad Approved Successfully');;
+            $this->qr->generateQrCode($dash_ad);
+            return $this->generalResponse(null, 'Ad Approved Successfully');
         });
     }
 

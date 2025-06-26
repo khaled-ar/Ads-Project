@@ -15,7 +15,7 @@ class SubscribtionsController extends Controller
     public function index()
     {
         $subscribtions = DriverAd::whereAdId(request('ad_id'))->with('driver.user')->get();
-        return $this->generalResponse(GetSubscribtions::collection($subscribtions));
+        return $this->generalResponse($subscribtions);
     }
 
     /**
