@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QrController;
 use App\Http\Controllers\Stackholders\SubscribtionsController;
 use App\Models\{
     Car,
@@ -39,6 +40,9 @@ Route::get('lables', fn () => ['data' => Lable::all()]);
 Route::get('centers', fn () => ['data' => Center::whereRegionId(request('region_id'))->get()]);
 
 Route::middleware('auth:sanctum')->group(function() {
+
+    // Get Single Ad Qr Code
+    Route::get('qr/{id}', [QrController::class, 'show']);
 
     // Appointments Routes.
     include base_path('routes/appointments.php');
