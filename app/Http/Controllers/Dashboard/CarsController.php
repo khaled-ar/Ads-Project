@@ -17,7 +17,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Car::all(), null, 200);
+        return $this->generalResponse(Car::with('years')->get(), null, 200);
     }
 
     /**

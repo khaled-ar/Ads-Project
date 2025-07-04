@@ -4,6 +4,7 @@ use App\Http\Controllers\QrController;
 use App\Http\Controllers\Stackholders\SubscribtionsController;
 use App\Models\{
     Car,
+    CarsYears,
     Center,
     City,
     DeliveryPrograms,
@@ -28,6 +29,8 @@ include base_path('routes/auth.php');
 
 // This route to get all avaliable cars to use it in register request.
 Route::get('cars', fn () => ['data' => Car::all()]);
+// This route to get all avaliable years of cars to use it in register request.
+Route::get('years', fn () => ['data' => CarsYears::whereCarId(request('car_id'))->pluck('year')->toArray()]);
 // This route to get all avaliable delivery programs to use it in register request.
 Route::get('programs', fn () => ['data' => DeliveryPrograms::all()]);
 // This route to get all avaliable cities to use it in register request.

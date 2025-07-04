@@ -16,4 +16,8 @@ class Car extends Model
      * @var array<int, string>
      */
     protected $guarded = [];
+
+    public function years() {
+        return $this->hasMany(CarsYears::class);
+    }
 }

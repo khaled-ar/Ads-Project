@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Dashboard\Cars;
 
+use App\Models\CarsYears;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class UpdateCarRequest extends FormRequest
 {
@@ -23,12 +25,25 @@ class UpdateCarRequest extends FormRequest
     {
         return [
             'name' => ['nullable', 'string', 'max:100'],
-            'year' => ['nullable', 'integer', 'digits:4'],
+            'years' => ['nullable', 'string'],
         ];
     }
 
-    public function update($car) {
-        $car->update($this->validated());
-        return 'Car Updated Suuccessfully.';
+    public function update($car)
+    {
+        return DB::transaction(function () use ($car) {
+            $car->update(['name' => $this->name]);
+            if ($this->years) {
+                $car->years()->delete();
+                $years = explode(',', $this->years);
+                foreach ($years as $year) {
+                    CarsYears::create([
+                        'car_id' => $car->id,
+                        'year' => $year
+                    ]);
+                }
+            }
+            return 'Car Updated Suuccessfully.';
+        });
     }
 }

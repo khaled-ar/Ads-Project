@@ -33,7 +33,7 @@ class CentersController extends Controller
      */
     public function show(Center $center)
     {
-        return $this->generalResponse(new GetSingleCenter($center->load('appointements')));
+        return $this->generalResponse(new GetSingleCenter($center->load(['appointements', 'works_days'])));
     }
 
     /**

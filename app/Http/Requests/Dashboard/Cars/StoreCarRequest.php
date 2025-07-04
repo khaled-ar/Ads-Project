@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Dashboard\Cars;
 
 use App\Models\Car;
+use App\Models\CarsYears;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreCarRequest extends FormRequest
 {
@@ -24,12 +26,22 @@ class StoreCarRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100'],
-            'year' => ['required', 'integer', 'digits:4'],
+            'years' => ['required', 'string'],
         ];
     }
 
     public function store() {
-        Car::create($this->validated());
-        return 'Car Created Suuccessfully.';
+        return DB::transaction(function () {
+            $car = Car::create(['name' => $this->name]);
+            $years = explode(',', $this->years);
+            foreach($years as $year) {
+                CarsYears::create([
+                    'car_id' => $car->id,
+                    'year' => $year
+                ]);
+            }
+            return 'Car Created Suuccessfully.';
+        });
+
     }
 }

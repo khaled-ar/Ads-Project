@@ -14,7 +14,7 @@ class DatabaseNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(private mixed $body, private string $subject, private string $key) {}
+    public function __construct(private mixed $body, private string $subject, private string $key, private string|null $note = null) {}
 
     /**
      * Get the notification's delivery channels.
@@ -40,6 +40,7 @@ class DatabaseNotification extends Notification
     public function toDatabase(object $notifiable) : array {
         return [
             'key' => $this->key,
+            'note' => $this->note,
             'subject' => $this->subject,
             'body' => $this->body,
         ];
