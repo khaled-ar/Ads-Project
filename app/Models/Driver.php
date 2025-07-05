@@ -34,8 +34,14 @@ class Driver extends Model
     protected $appends = [
         'personal_id_image_url',
         'driving_license_image_url',
-        'car_mechanics_image_url'
+        'car_mechanics_image_url',
+        'appointement'
     ];
+
+    public function getAppointementAttribute()
+    {
+        return $this->appointments;
+    }
 
     public function getPersonalIdImageUrlAttribute()
     {
