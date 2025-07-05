@@ -63,4 +63,12 @@ class SubscribtionsController extends Controller
     {
         //
     }
+
+    public function driver(Request $request) {
+        $driver = DriverAd::whereAdId(request('ad_id'))
+        ->whereStatus('in_progress')
+        ->whereDriverId(request('driver_id'))
+        ->with('driver.user')->first();
+        return $this->generalResponse($driver->driver);
+    }
 }

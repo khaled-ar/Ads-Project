@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('subscriptions', SubscribtionsController::class);
 Route::patch('subscriptions/reject/{id}', [SubscribtionsController::class, 'reject']);
+Route::get('subscriptions/{ad_id}/driver', [SubscribtionsController::class, 'driver']);
 
 

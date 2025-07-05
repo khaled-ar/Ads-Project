@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/ads.php');
         // Subscribtions Route
         Route::get('subscribtions', [SubscribtionsController::class, 'index']);
+        Route::get('subscribtions/driver', [SubscribtionsController::class, 'driver']);
     });
 
     // Drivers Routes.
