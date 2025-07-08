@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoordinatesController;
 use App\Http\Controllers\QrController;
 use App\Http\Controllers\Stackholders\SubscribtionsController;
 use App\Models\{
@@ -95,6 +96,9 @@ Route::middleware('auth:sanctum')->group(function() {
 
     // Notifications Routes.
     include base_path('routes/notifications.php');
+
+    // GPS Routes
+    Route::apiResource('coordinates', CoordinatesController::class);
 
 });
 
