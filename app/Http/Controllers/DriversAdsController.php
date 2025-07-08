@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Drivers\ShowAdDetailsRequest;
 use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
+use App\Models\DriverAd;
 use Illuminate\Http\Request;
 
 class DriversAdsController extends Controller
@@ -30,9 +31,6 @@ class DriversAdsController extends Controller
         return $this->generalResponse($ads);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ShowAdDetailsRequest $request, Ad $ad)
     {
         return $this->generalResponse($request->appointements($ad));
@@ -41,5 +39,18 @@ class DriversAdsController extends Controller
     public function subscribe(SubscribeInAdRequest $request, Ad $ad) {
         $res = $request->store($ad);
         return $this->generalResponse(null, $res[0], $res[1]);
+    }
+
+    public function make_inprogress(Request $request) {
+        $subscription = DriverAd::whereAdId($request->ad_id)
+            ->whereDriverId($request->user()->driver->id)
+            ->whereStatus('appointement_booking')
+            ->update(['status' => 'in_progress']);
+
+        if(! $subscription) {
+            return $this->generalResponse(null, 'There is an error.', 400);
+        }
+
+        return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }
