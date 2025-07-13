@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Stackholders\{
     StoreStackholderRequest,
 };
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StackholdersController extends Controller
@@ -15,7 +16,7 @@ class StackholdersController extends Controller
      */
     public function index()
     {
-        //
+        return $this->generalResponse(User::whereRole('معلن')->get(), null, 200);
     }
 
     /**
@@ -47,6 +48,7 @@ class StackholdersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::whereId($id)->delete();
+        return $this->generalResponse(null, 'Stackholder Deleted Successfully.', 200);
     }
 }

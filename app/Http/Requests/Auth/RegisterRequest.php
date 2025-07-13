@@ -46,7 +46,7 @@ class RegisterRequest extends FormRequest
             'car_model' => ['required', 'string', 'exists:cars,name'],
             'car_color' => ['required', 'string', 'between:3,15'],
             'car_number' => ['required', 'string', 'between:3,50'],
-            'car_year' => ['required', 'integer', 'exists:cars,year'],
+            'car_year' => ['required', 'integer'],
             'personal_id_image' => ['required', 'image', 'mimes:png,jpg', 'max:4096'],
             'driving_license_image' => ['required', 'image', 'mimes:png,jpg', 'max:4096'],
             'car_mechanics_image' => ['required', 'image', 'mimes:png,jpg', 'max:4096'],

@@ -27,4 +27,8 @@ class Center extends Model
     public function active_appointements() {
         return $this->hasMany(Appointement::class)->whereStatus('to do');
     }
+
+    public function region() {
+        return $this->belongsTo(Region::class)->select(['id', 'name']);
+    }
 }

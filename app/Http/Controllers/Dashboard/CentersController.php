@@ -17,7 +17,7 @@ class CentersController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Center::all());
+        return $this->generalResponse(Center::with('region')->get());
     }
 
     /**
@@ -33,7 +33,7 @@ class CentersController extends Controller
      */
     public function show(Center $center)
     {
-        return $this->generalResponse(new GetSingleCenter($center->load(['appointements', 'works_days'])));
+        return $this->generalResponse(new GetSingleCenter($center->load(['appointements', 'works_days', 'region'])));
     }
 
     /**

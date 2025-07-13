@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoordinatesController;
+use App\Http\Controllers\Frontend\StoriesController;
 use App\Http\Controllers\QrController;
 use App\Http\Controllers\Stackholders\SubscribtionsController;
 use App\Models\{
@@ -41,7 +42,7 @@ Route::get('regions', fn () => ['data' => Region::latest()->whereIsActive(1)->wh
 // This route to get all avaliable lables to use it in subscribe in ad request.
 Route::get('lables', fn () => ['data' => Lable::all()]);
 // This route to get all avaliable centers to use it in ad adding request.
-Route::get('centers', fn () => ['data' => Center::whereRegionId(request('region_id'))->get()]);
+Route::get('centers', fn () => ['data' => Center::whereRegionId(request('region_id'))->with('region')->get()]);
 
 Route::middleware('auth:sanctum')->group(function() {
 
@@ -77,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.works_days.php');
         // Works Times Routes.
         include base_path('routes/dashboard.works_times.php');
+        // Store Story Request
+        Route::post('stories', [StoriesController::class, 'store']);
     });
 
     // Stackholders Routes.
