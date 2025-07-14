@@ -46,7 +46,8 @@ class DriversController extends Controller
      */
     public function show(Driver $driver)
     {
-        return $this->generalResponse(new DriverResource($driver->load('user')));
+        $driver = $driver->load('user');
+        return $this->generalResponse(new DriverResource($driver));
     }
 
     /**

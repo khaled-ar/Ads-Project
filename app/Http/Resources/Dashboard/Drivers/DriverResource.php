@@ -20,19 +20,23 @@ class DriverResource extends ResourceCollection
         return [
             'id' => $this->driver->id,
             'username' => $this->driver->user->username,
-            'role' => $this->driver->user->role,
             'account_status' => $this->driver->user->account_status,
             'place_of_residence' => $this->driver->place_of_residence,
             'work_status' => $this->driver->work_status,
-            'age' => $this->driver->age,
+            'birth_date' => $this->driver->birth_date,
             'number' => $this->driver->number,
             'nationality' => $this->driver->nationality,
+            'km_per_day' => $this->driver->km_per_day,
+            'km_per_month' => $this->driver->km_per_month,
             'gender' => $this->driver->gender,
-            'car_name' => $this->driver->car_name,
+            'car_model' => $this->driver->car_model,
             'car_color' => $this->driver->car_color,
             'car_number' => $this->driver->car_number,
             'car_year' => $this->driver->car_year,
-            'file_url' => $this->driver->file_url,
+            'personal_id_image_url' => $this->driver->personal_id_image_url,
+            'driving_license_image_url' => $this->driver->driving_license_image_url,
+            'car_mechanics_image_url' => $this->driver->personal_id_image_url,
+            'appointement' => $this->driver->appointement,
         ];
     }
 }
