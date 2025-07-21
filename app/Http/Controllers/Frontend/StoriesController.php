@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Admin;
 use App\Http\Requests\Dashboard\StoreStoryRequest;
 use App\Models\Story;
+use App\Models\Visitor;
 use App\Models\Winner;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,15 @@ class StoriesController extends Controller
      */
     public function index()
     {
+        $visitors = Visitor::pluck('ip_address')->toArray();
+        $visitors_count = count($visitors);
+        $ip = request()->ip();
+        if(! in_array($ip, $visitors)) {
+            Visitor::create(['ip_address' => $ip]);
+            $visitors_count++;
+        }
         $stories = Story::latest()->get();
-        return view('stories', compact('stories'));
+        return view('stories', compact('stories', 'visitors_count'));
     }
 
     public function prize_form(Story $story) {

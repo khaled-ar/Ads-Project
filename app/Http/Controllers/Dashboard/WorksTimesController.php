@@ -48,9 +48,9 @@ class WorksTimesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorksTimes $work_time)
+    public function destroy(WorksTimes $works_time)
     {
-        $work_time->delete();
+        $works_time->delete();
         return $this->generalResponse(null, 'Work Time Deleted Successfully', 200);
     }
 }

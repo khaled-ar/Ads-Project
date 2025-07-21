@@ -19,6 +19,8 @@
     <div class="container-fluid stories-app">
         <h1 class="text-center my-4">شاهد واربح مع خطوة</h1>
         <br>
+        <hr>
+        <h5 class="text-center my-4"> {{ $visitors_count }} : عدد الزوار</h5>
         <br>
 
         <!-- Stories Container -->

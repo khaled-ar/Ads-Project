@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoordinatesController;
+use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Frontend\StoriesController;
 use App\Http\Controllers\QrController;
 use App\Http\Controllers\Stackholders\SubscribtionsController;
@@ -80,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.works_times.php');
         // Store Story Request
         Route::post('stories', [StoriesController::class, 'store']);
+        // Home Page Routes
+        Route::apiResource('home', HomeController::class);
     });
 
     // Stackholders Routes.
