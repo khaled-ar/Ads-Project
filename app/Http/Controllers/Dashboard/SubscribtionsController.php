@@ -7,6 +7,7 @@ use App\Http\Requests\Dashboard\Subscribtions\{
     JoiningRejectRequest
 };
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Dashboard\Drivers\DriverResource;
 use App\Http\Resources\GetSubscribtions;
 use App\Models\DriverAd;
 use Illuminate\Http\Request;
@@ -66,9 +67,8 @@ class SubscribtionsController extends Controller
 
     public function driver(Request $request) {
         $driver = DriverAd::whereAdId(request('ad_id'))
-        ->whereStatus('in_progress')
         ->whereDriverId(request('driver_id'))
         ->with('driver.user')->first();
-        return $this->generalResponse($driver->driver);
+        return $this->generalResponse(new DriverResource($driver->driver, $driver->lables));
     }
 }

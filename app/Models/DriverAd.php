@@ -25,14 +25,7 @@ class DriverAd extends Model
     ];
 
     public function driver() {
-        return $this->belongsTo(Driver::class)->select([
-            'id',
-            'user_id',
-            'car_model',
-            'car_year',
-            'gender',
-            'nationality'
-        ]);
+        return $this->belongsTo(Driver::class);
     }
 
     public function ad() {

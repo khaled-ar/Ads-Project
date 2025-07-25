@@ -2,16 +2,23 @@ document.addEventListener('DOMContentLoaded', function() {
     initStories();
     highlightFirstStory();
 });
+
+let currentStoryIndex = 0;
+let allStories = [];
+
 function initStories() {
-    const storyCircles = document.querySelectorAll('.story-circle');
-    storyCircles.forEach(circle => {
+    allStories = Array.from(document.querySelectorAll('.story-circle'));
+    console.log(allStories);
+
+    allStories.forEach((circle, index) => {
         circle.addEventListener('click', function(e) {
             if (!e.target.classList.contains('story-username')) {
+                currentStoryIndex = index;
                 const prizeValue = this.dataset.prizeValue;
                 const image_url = this.dataset.imageUrl;
-                const title = this.dataset.title;
+                const title = this.querySelector('.story-username').textContent;
                 const form_url = this.dataset.prizeFormUrl;
-                showStory(image_url, title, prizeValue, form_url);
+                showStory(image_url, title, prizeValue, form_url, index);
             }
         });
 
@@ -25,7 +32,9 @@ function initStories() {
     });
 }
 
-function showStory(image_url, title, prizeValue, form_url) {
+function showStory(image_url, title, prizeValue, form_url, index) {
+    currentStoryIndex = index;
+
     const viewer = document.createElement('div');
     viewer.className = 'story-viewer';
     viewer.innerHTML = `
@@ -36,6 +45,8 @@ function showStory(image_url, title, prizeValue, form_url) {
             <div class="story-close-btn">&times;</div>
             <img src="${image_url}" alt="${title}" class="viewer-story-image">
             <div class="story-viewer-footer">
+                <div class="viewer-story-username">${title}</div>
+                <div class="viewer-action-line"></div>
                 ${prizeValue > 0 ? `
                 <a href="${form_url}" class="view-form-btn">
                     <span>اربح الان</span>
@@ -44,6 +55,16 @@ function showStory(image_url, title, prizeValue, form_url) {
                 ` : ''}
             </div>
         </div>
+        ${currentStoryIndex > 0 ? `
+        <div class="story-nav-btn story-prev-btn">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        ` : ''}
+        ${currentStoryIndex < allStories.length - 1 ? `
+        <div class="story-nav-btn story-next-btn">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        ` : ''}
     `;
 
     document.body.appendChild(viewer);
@@ -62,12 +83,23 @@ function showStory(image_url, title, prizeValue, form_url) {
 
         // Close when transition completes
         progressBar.addEventListener('transitionend', function() {
-            closeViewer(viewer);
+            navigateToNextStory(viewer);
         });
 
         // Manual close button
         viewer.querySelector('.story-close-btn').addEventListener('click', function() {
             closeViewer(viewer);
+        });
+
+        // Navigation buttons
+        viewer.querySelector('.story-prev-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            navigateToPrevStory(viewer);
+        });
+
+        viewer.querySelector('.story-next-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            navigateToNextStory(viewer);
         });
 
         // Pause on hover
@@ -86,11 +118,38 @@ function showStory(image_url, title, prizeValue, form_url) {
 
             // Reattach the transitionend listener
             progressBar.addEventListener('transitionend', function() {
-                closeViewer(viewer);
+                navigateToNextStory(viewer);
             });
         });
 
     }, 10);
+
+}
+
+function navigateToNextStory(viewer) {
+    if (currentStoryIndex < allStories.length - 1) {
+        currentStoryIndex++;
+        const nextStory = allStories[currentStoryIndex];
+        const prizeValue = nextStory.dataset.prizeValue;
+        const image_url = nextStory.dataset.imageUrl;
+        const title = nextStory.querySelector('.story-username').textContent;
+        const form_url = nextStory.dataset.prizeFormUrl;
+        closeViewer(viewer);
+        showStory(image_url, title, prizeValue, form_url, currentStoryIndex);
+    }
+}
+
+function navigateToPrevStory(viewer) {
+    if (currentStoryIndex > 0) {
+        currentStoryIndex--;
+        const prevStory = allStories[currentStoryIndex];
+        const prizeValue = prevStory.dataset.prizeValue;
+        const image_url = prevStory.dataset.imageUrl;
+        const title = prevStory.querySelector('.story-username').textContent;
+        const form_url = prevStory.dataset.prizeFormUrl;
+        closeViewer(viewer);
+        showStory(image_url, title, prizeValue, form_url, currentStoryIndex);
+    }
 }
 
 function closeViewer(viewer) {
@@ -110,3 +169,4 @@ function highlightFirstStory() {
         setTimeout(() => firstStory.classList.remove('new-story'), 10000);
     }
 }
+

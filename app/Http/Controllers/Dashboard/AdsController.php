@@ -78,8 +78,9 @@ class AdsController extends Controller
 
     public function reject(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
-            $dash_ad->update(['status' => 'مرفوض', 'notes' => request('notes')]);
-            $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected'));
+            // $dash_ad->update(['status' => 'مرفوض', 'notes' => request('notes')]);
+            $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected', request('notes')));
+            $dash_ad->delete();
             return $this->generalResponse(null, 'Ad Rejected Successfully');;
         });
     }

@@ -18,8 +18,8 @@ class HomeController extends Controller
     public function index()
     {
         return $this->generalResponse([
-            'drivers_count' => Driver::count(),
-            'ads_count' => Ad::count(),
+            'drivers_count' => User::whereRole('سائق')->whereAccountStatus('active')->count(),
+            'ads_count' => Ad::whereStatus('قيد العمل')->count(),
             'companies_count' => User::whereRole('معلن')->count()
         ]);
     }

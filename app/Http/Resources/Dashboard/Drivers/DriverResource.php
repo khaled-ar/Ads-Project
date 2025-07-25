@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class DriverResource extends ResourceCollection
 {
-    public function __construct(private Driver $driver) {}
+    public function __construct(private Driver $driver, private string $lables) {}
 
     /**
      * Transform the resource collection into an array.
@@ -36,6 +36,7 @@ class DriverResource extends ResourceCollection
             'personal_id_image_url' => $this->driver->personal_id_image_url,
             'driving_license_image_url' => $this->driver->driving_license_image_url,
             'car_mechanics_image_url' => $this->driver->personal_id_image_url,
+            'lables' => $this->lables,
             'appointement' => $this->driver->appointement,
         ];
     }
