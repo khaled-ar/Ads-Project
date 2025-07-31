@@ -83,9 +83,10 @@ class DriversController extends Controller
         return DB::transaction(function () use($driver) {
             $driver->user()->update([
                 'account_status' => 'rejected',
-                'notes' => request('notes')
+                'notes' => request('notes'),
+                'rejected_at' => now()
             ]);
-            $driver->user->notify(new DatabaseNotification('للاسف لقد تم رفض حسابك من قبل الادمن', 'طلب انضمام', 'account_status'));
+            $driver->user->notify(new DatabaseNotification('للاسف لقد تم رفض حسابك من قبل الادمن، الرجاء مراجعة سبب الرفض واعادة طلب الانضمام خلال يوم او يومين وشكرا', 'طلب انضمام', 'account_status', request('notes')));
             return $this->generalResponse(null, 'Account Rejected Successfully');;
         });
     }

@@ -1,10 +1,16 @@
 <?php
 
-use App\Http\Controllers\CoordinatesController;
-use App\Http\Controllers\Dashboard\HomeController;
-use App\Http\Controllers\Frontend\StoriesController;
-use App\Http\Controllers\QrController;
-use App\Http\Controllers\Stackholders\SubscribtionsController;
+use App\Http\Controllers\{
+    CoordinatesController,
+    ProfitsController,
+    QrController,
+    TrackingController,
+    Stackholders\SubscribtionsController,
+    Dashboard\HomeController,
+    Frontend\StoriesController,
+
+};
+
 use App\Models\{
     Car,
     CarsYears,
@@ -53,6 +59,9 @@ Route::middleware('auth:sanctum')->group(function() {
     // Appointments Routes.
     include base_path('routes/appointments.php');
 
+    // Profits Routes
+    Route::apiResource('profits', ProfitsController::class);
+
     // Dashboard Routes.
     Route::prefix('dashboard')->middleware('admin')->group(function() {
         // Drivers Routes.
@@ -95,9 +104,11 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     // Drivers Routes.
-    Route::prefix('drivers')->middleware('driver')->group(function() {
+    Route::prefix('drivers')->middleware(['driver', 'verified', 'active'])->group(function() {
         // Ads Routes.
         include base_path('routes/drivers.ads.php');
+        // Tracking Routes
+        Route::post('set-tracking-data', [TrackingController::class, 'set']);
     });
 
     // Notifications Routes.

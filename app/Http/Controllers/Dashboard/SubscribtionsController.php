@@ -48,7 +48,7 @@ class SubscribtionsController extends Controller
         return $this->generalResponse(null, 'Done Successfully');
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      */
     public function reject(JoiningRejectRequest $request, string $id)

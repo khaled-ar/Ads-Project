@@ -32,11 +32,11 @@ class JoiningRejectRequest extends FormRequest
     public function reject($id) {
         DB::transaction(function() use($id) {
             $driver_ad = DriverAd::findOrFail($id);
-            $driver_ad->forceFill(['status' => 'rejected', 'notes' => $this->notes])->save();
             $driver = $driver_ad->driver;
             $body = "لقد تم رفض طلب انضمامك الى الحملة الاعلانية {$driver_ad->ad->name}";
             $subject = 'طلب الانضمام الى الحملة الاعلانية';
             $driver->user->notify(new DatabaseNotification($body, $subject, 'joining_rejected', $this->notes));
+            $driver_ad->delete();
         });
     }
 }

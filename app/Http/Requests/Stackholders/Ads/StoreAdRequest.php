@@ -38,7 +38,7 @@ class StoreAdRequest extends FormRequest
             'km_max' => ['required', 'numeric', 'gt:km_min'],
             'company_name' => ['required', 'string', 'max:100'],
             'regions' => ['required', 'string', 'max:100'],
-            'duration' => ['required', 'string', 'max:200'],
+            'duration' => ['required', 'integer', 'min:1'],
             'centers' => ['required', 'string', 'max:1000'],
             'images' => ['required', 'array', 'between:1,10'],
             'images.*' => ['image', 'mimes:png,jpg', 'max:4096'],

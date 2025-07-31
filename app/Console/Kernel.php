@@ -2,7 +2,10 @@
 
 namespace App\Console;
 
+use App\Jobs\CalculateDriversProfits;
+use App\Jobs\DeleteRejectedDrivers;
 use App\Jobs\SaveCoordinates;
+use App\Jobs\UpdateAdStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +17,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->job(new SaveCoordinates())->everyFiveMinutes();
+        $schedule->job(new UpdateAdStatus())->daily()->then(function() {
+            CalculateDriversProfits::dispatch();
+        });
+        $schedule->job(new DeleteRejectedDrivers())->daily();
     }
 
     /**

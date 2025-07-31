@@ -64,9 +64,10 @@ class Kernel extends HttpKernel
         'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'stackholder' => \App\Http\Middleware\Stackholder::class,
         'driver' => \App\Http\Middleware\Driver::class,
+        'active' => \App\Http\Middleware\EnsureDriverIsActive::class
     ];
 }

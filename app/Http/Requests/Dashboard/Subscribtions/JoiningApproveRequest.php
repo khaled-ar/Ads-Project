@@ -37,6 +37,7 @@ class JoiningApproveRequest extends FormRequest
             $body = "لقد تم قبول طلب انضمامك الى الحملة الاعلانية، يرجى التوجه الى تفاصيل الحملة من اجل حجز موعد: {$driver_ad->ad->name}";
             $subject = 'طلب الانضمام الى الحملة الاعلانية';
             $driver->user->notify(new DatabaseNotification($body, $subject, 'joining_approved'));
+            $driver->ads()->whereStatus('approval_wating')->delete();
         });
     }
 }

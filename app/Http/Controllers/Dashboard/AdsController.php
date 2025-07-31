@@ -69,7 +69,7 @@ class AdsController extends Controller
 
     public function approve(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
-            $dash_ad->update(['status' => 'قيد العمل']);
+            $dash_ad->update(['status' => 'قيد العمل', 'created_at' => now()]);
             $dash_ad->user->notify(new DatabaseNotification('تهانينا لقد تم قبول الحملة من قبل الادمن', 'قبول الحملة', 'ad_approved'));
             $this->qr->generateQrCode($dash_ad);
             return $this->generalResponse(null, 'Ad Approved Successfully');
@@ -78,7 +78,6 @@ class AdsController extends Controller
 
     public function reject(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
-            // $dash_ad->update(['status' => 'مرفوض', 'notes' => request('notes')]);
             $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected', request('notes')));
             $dash_ad->delete();
             return $this->generalResponse(null, 'Ad Rejected Successfully');;
