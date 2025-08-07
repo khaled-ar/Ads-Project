@@ -19,7 +19,20 @@ class ProfitsController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Profits::all());
+        $profits = Profits::with('driver')->get();
+        $final = [];
+        foreach($profits as $profit) {
+            $final[] = [
+                'id' => $profit->id,
+                'account_id' => $profit->account_id,
+                'profits' => $profit->profits,
+                'driver_name' => $profit->driver->user->username,
+                'driver_number' => $profit->driver->number,
+                'driver_place' => $profit->driver->place_of_residence,
+                'driver_nationality' => $profit->driver->nationality,
+            ];
+        }
+        return $this->generalResponse($final);
     }
 
     /**
@@ -28,8 +41,8 @@ class ProfitsController extends Controller
     public function store(Request $request)
     {
         $sham_cash_id = $request->validate([
-            'sham_cash_id' => 'required', 'string', 'max:100', 'unique:profits,sham_cash_id'
-        ])['sham_cash_id'];
+            'account_id' => 'required', 'string', 'max:100', 'unique:profits,account_id'
+        ])['account_id'];
 
         $profits = $request->user()->driver->ads()->whereStatus('done')->sum('profits');
 
@@ -39,7 +52,7 @@ class ProfitsController extends Controller
 
         Profits::create([
             'driver_id' => $request->user()->driver->id,
-            'sham_cash_id' => $sham_cash_id,
+            'account_id' => $sham_cash_id,
             'profits' => $profits
         ]);
 

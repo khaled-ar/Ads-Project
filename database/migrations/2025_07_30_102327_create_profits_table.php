@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('driver_id')->constrained('drivers')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('sham_cash_id')->unique();
+            $table->string('account_id')->unique();
             $table->float('profits');
             $table->timestamps();
         });

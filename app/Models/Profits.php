@@ -22,6 +22,6 @@ class Profits extends Model
     protected $guarded = [];
 
     public function driver() {
-        return $this->belongsTo(Driver::class)->select(['id', 'number']);
+        return $this->belongsTo(Driver::class)->select(['id', 'user_id', 'number', 'place_of_residence', 'nationality']);
     }
 }
