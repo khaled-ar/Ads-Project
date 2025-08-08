@@ -16,6 +16,7 @@ class GetSubscribtions extends JsonResource
     {
         return [
             'id' => $this->id,
+            'driver_id' => $this->driver->id,
             'status' => $this->status,
             'driver_name' => $this->driver->user->username,
             'driver_image_url' => $this->driver->user->image_url,
