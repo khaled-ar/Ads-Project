@@ -24,12 +24,12 @@ class ResendCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'username' => ['required', 'string', 'exists:users,username']
         ];
     }
 
     public function resend() {
-        $user = User::whereIpAddress($this->ip())->first();
+        $user = User::whereUsername($this->username)->first();
         $user->notify(new EmailVerificationCode());
         return 'The code has been resent successfully.';
     }
