@@ -45,7 +45,12 @@ Route::get('programs', fn () => ['data' => DeliveryPrograms::all()]);
 // This route to get all avaliable cities to use it in register request.
 Route::get('cities', fn () => ['data' => City::latest()->whereIsActive(1)->get()]);
 // This route to get all avaliable regions to use it in register request.
-Route::get('regions', fn () => ['data' => Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()]);
+Route::get('regions', fn () => [
+    'data' => request('city_id') ?
+        Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()
+        :
+        Region::latest()->whereIsActive(1)->get()
+    ]);
 // This route to get all avaliable lables to use it in subscribe in ad request.
 Route::get('lables', fn () => ['data' => Lable::all()]);
 // This route to get all avaliable centers to use it in ad adding request.
