@@ -89,9 +89,11 @@ class Driver extends Model
 
     public function activeAdsNumber() {
         return $this->hasMany(DriverAd::class)
-            ->whereStatus('in_progress')
-            ->orWhere('status', 'appointement_booking')
-            ->count();
+            ->where(function($query) {
+        				$query->where('status', 'in_progress')
+              				  ->orWhere('status', 'appointement_booking');
+    			})
+    			->count();
     }
 
     public function appointments()
