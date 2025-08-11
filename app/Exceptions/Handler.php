@@ -42,32 +42,32 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof ThrottleRequestsException) {
             return response()->json([
-                'message' => 'Try Again Later.',
+                'message' => __('responses.error_429'),
             ], 429);
         }
 
 
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                'message' => 'Not Found.',
+                'message' => __('responses.error_404'),
             ], 404);
         }
 
         if ($e instanceof AuthorizationException) {
             return response()->json([
-                'message' => 'This Action Not Allowed.',
+                'message' => __('responses.error_403'),
             ], 403);
         }
 
         if ($e instanceof UniqueConstraintViolationException) {
             return response()->json([
-                'message' => 'Already Exists.',
+                'message' => __('responses.error_unique'),
             ]);
         }
 
         if ($e instanceof QueryException) {
             return response()->json([
-                'message' => 'Unknown Error!',
+                'message' => __('responses.error_500'),
             ], 500);
         }
 

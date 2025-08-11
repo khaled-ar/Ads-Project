@@ -45,7 +45,7 @@ class SubscribtionsController extends Controller
     public function update(JoiningApproveRequest $request, string $id)
     {
         $request->approve($id);
-        return $this->generalResponse(null, 'Done Successfully');
+        return $this->generalResponse(null, 'Done Successfully.');
     }
 
     /**
@@ -54,7 +54,7 @@ class SubscribtionsController extends Controller
     public function reject(JoiningRejectRequest $request, string $id)
     {
         $request->reject($id);
-        return $this->generalResponse(null, 'Done Successfully');
+        return $this->generalResponse(null, 'Done Successfully.');
     }
 
     /**

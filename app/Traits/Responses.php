@@ -8,7 +8,7 @@ trait Responses {
 
     public function generalResponse(mixed $data, mixed $message = null, int $status = 200) : JsonResponse {
         return response()->json([
-            'message' => $message,
+            'message' => __('responses.' . $message),
             'data' => $data,
         ], $status);
     }

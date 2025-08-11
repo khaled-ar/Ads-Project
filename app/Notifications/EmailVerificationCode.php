@@ -39,6 +39,16 @@ class EmailVerificationCode extends Notification
         $code = Str::random(6);
         Cache::put(request()->ip(), [$notifiable->email, $code], 60 * 60);
 
+        if(config('app.locale') == 'ar') {
+            return (new MailMessage)
+                ->subject('تأكيد الحساب')
+                ->greeting("مرحبًا {$notifiable->username}،")
+                ->line('لقد تم إرسال هذا البريد إليك لتأكيد حسابك، يرجى تأكيد بريدك الإلكتروني باستخدام الكود أدناه.')
+                ->line("كود التأكيد الخاص بك صالح لمدة ساعة واحدة فقط")
+              	->line($code)
+                ->line('شكرًا لاستخدامك تطبيقنا!');
+        }
+
         return (new MailMessage)
                     ->subject('Account Verification')
                     ->greeting("Hello {$notifiable->username},")
