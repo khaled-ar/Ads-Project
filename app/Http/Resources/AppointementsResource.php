@@ -19,6 +19,8 @@ class AppointementsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $times = [];
+
         $works_days = $this->center->works_days;
         $center_name = $this->center->name;
         $center_location = $this->center->location;
