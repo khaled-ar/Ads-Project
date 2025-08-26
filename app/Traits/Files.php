@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+
 trait Files {
 
     // This function do changing image name and then move it.
