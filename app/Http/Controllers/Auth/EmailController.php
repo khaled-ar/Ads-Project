@@ -14,17 +14,22 @@ use Illuminate\Support\Facades\Cache;
 class EmailController extends Controller
 {
     public function verify(Request $request) {
-        $user_data = Cache::get($request->ip()) ?? null;
+        $request->validate([
+            'username' => ['required', 'string', 'exists:users,username']
+        ]);
+
+        $email = User::whereUsername($request->username)->first()->email ?? null;
+        $user_data = Cache::get($email) ?? null;
         if(! $user_data) {
             return $this->generalResponse(null, 'Please Request the Code again', 400);
         }
-        if($request->code != $user_data[1]) {
+        if($request->code != $user_data) {
             return $this->generalResponse(null, 'Please Ckeck the Code', 400);
         }
-        User::whereEmail($user_data[0])->update([
+        User::whereEmail($email)->update([
             'email_verified_at' => now()
         ]);
-        Cache::forget($request->ip());
+        Cache::forget($email);
         return $this->generalResponse(null, 'Email Verified Successfully');
     }
 

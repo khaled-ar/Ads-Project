@@ -37,7 +37,7 @@ class EmailVerificationCode extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $code = Str::random(6);
-        Cache::put(request()->ip(), [$notifiable->email, $code], 60 * 60);
+        Cache::put($notifiable->email, $code, 60 * 60);
 
         if(config('app.locale') == 'ar') {
             return (new MailMessage)

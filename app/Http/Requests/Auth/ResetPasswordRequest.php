@@ -27,6 +27,7 @@ class ResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'email' => ['required', 'email', 'exists:users,email'],
             'code' => ['required', 'string', 'size:6'],
             'password' => ['required', 'string', 'confirmed',
                 Password::min(8)
@@ -40,13 +41,13 @@ class ResetPasswordRequest extends FormRequest
     }
 
     public function update_password() {
-        $user_data = Cache::get(request()->ip());
-        if(request()->code !== $user_data[1]) {
+        $user_data = Cache::get($this->email);
+        if(request()->code !== $user_data) {
             return $this->generalResponse(null, 'Please Ckeck the Code Again', 400);
         }
-        $user = User::whereEmail($user_data[0])->first();
+        $user = User::whereEmail($this->email)->first();
         $user->update(['password' => $this->password]);
-        Cache::forget(request()->ip());
+        Cache::forget($this->email);
         return $this->generalResponse(null, 'Password Changed Successfully', 200);
 
     }
