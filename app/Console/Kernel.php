@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->job(new SaveCoordinates())->everyFiveMinutes();
-        $schedule->job(new UpdateAdStatus())->daily()->then(function() {
+        $schedule->job(new UpdateAdStatus())->everySecond()->then(function() {
             CalculateDriversProfits::dispatch();
         });
         $schedule->job(new DeleteRejectedDrivers())->daily();

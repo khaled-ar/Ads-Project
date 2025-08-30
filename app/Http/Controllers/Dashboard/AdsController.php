@@ -7,7 +7,9 @@ use App\Http\Requests\Dashboard\Ads\{
     StoreAdRequest,
     UpdateAdRequest
 };
+use App\Jobs\CalculateDriversProfits;
 use App\Models\Ad;
+use App\Models\DriverAd;
 use App\Notifications\DatabaseNotification;
 use App\Services\QrService;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +65,8 @@ class AdsController extends Controller
      */
     public function destroy(Ad $dash_ad)
     {
+        DriverAd::whereAdId($dash_ad->id)->update(['status' => 'done']);
+        CalculateDriversProfits::dispatch();
         $dash_ad->delete();
         return $this->generalResponse(null, 'Ad Deleted Successfully');
     }

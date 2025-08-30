@@ -29,27 +29,25 @@ class CalculateDriversProfits implements ShouldQueue
     {
         try {
             $drivers_steps = DriverTrip::with(['ad', 'driver'])->get();
-            foreach($drivers_steps as $driver_steps) {
-                if($driver_steps->ad->status = 'منتهية') {
-                    $km_max = $driver_steps->ad->km_max;
-                    $km_min = $driver_steps->ad->km_min;
-                    $km_price = $driver_steps->ad->km_price;
-                    if($driver_steps->steps > $km_max) {
-                        $steps = $km_max;
-                    } elseif($driver_steps->steps < $km_min) {
-                        $steps = 0;
-                    } else {
-                        $steps = $driver_steps->steps;
-                    }
-                    $profits = round($steps * $km_price, 2);
-                    DriverAd::whereAdId($driver_steps->ad_id)
-                        ->whereDriverId($driver_steps->driver_id)
-                        ->update([
-                            'profits' => $profits
-                        ]);
+            foreach ($drivers_steps as $driver_steps) {
+                $km_max = $driver_steps->ad->km_max;
+                $km_min = $driver_steps->ad->km_min;
+                $km_price = $driver_steps->ad->km_price;
+                if ($driver_steps->steps > $km_max) {
+                    $steps = $km_max;
+                } elseif ($driver_steps->steps < $km_min) {
+                    $steps = 0;
+                } else {
+                    $steps = $driver_steps->steps;
                 }
+                $profits = round($steps * $km_price, 2);
+                DriverAd::whereAdId($driver_steps->ad_id)
+                    ->whereDriverId($driver_steps->driver_id)
+                    ->update([
+                        'profits' => $profits
+                    ]);
             }
-        }catch(\Exception $e) {
+        } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }
