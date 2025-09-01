@@ -32,7 +32,12 @@ class AuthController extends Controller
     }
 
     public function update_driver_profile(UpdateProfileRequest $request) {
-        return $this->generalResponse(null, $request->update_profile());
+        $msg = $request->update_profile();
+        $user = $request->user();
+        if($user->role == 'سائق') {
+            $user->load('driver.ads');
+        }
+        return $this->generalResponse($user, $msg);
     }
 
     public function logout(Request $request) {

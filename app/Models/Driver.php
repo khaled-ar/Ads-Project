@@ -100,4 +100,9 @@ class Driver extends Model
     {
         return $this->hasMany(Appointement::class)->with('center');
     }
+
+    public function trips()
+    {
+        return $this->hasMany(DriverTrip::class);
+    }
 }

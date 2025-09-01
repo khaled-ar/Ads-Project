@@ -55,6 +55,8 @@ class ProfitsController extends Controller
             'account_id' => $sham_cash_id,
             'profits' => $profits
         ]);
+        $request->user()->driver->trips()->delete();
+        $request->user()->driver->ads()->whereStatus('done')->update(['profits' => 0]);
 
         return $this->generalResponse(null, 'Your Request Sent To Admin Successfully, PLease Wait for 24 Hours Maximum.');
     }
@@ -80,7 +82,6 @@ class ProfitsController extends Controller
      */
     public function destroy(Profits $profit)
     {
-        $profit->driver->ads()->whereStatus('done')->delete();
         $profit->delete();
         return $this->generalResponse(null, 'Deleted Successfully.');
     }
