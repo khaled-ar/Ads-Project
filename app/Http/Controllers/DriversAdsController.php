@@ -21,7 +21,7 @@ class DriversAdsController extends Controller
             'message' => null,
             'has_current' => $ads[0]->status == 'in_progress',
             'total_ads' => $count,
-            'total_profits' => $ads->sum('profits'),
+            'total_profits' => round($ads->sum('profits'), 2),
             'data' => $ads
         ]);
     }

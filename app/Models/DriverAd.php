@@ -31,4 +31,9 @@ class DriverAd extends Model
     public function ad() {
         return $this->belongsTo(Ad::class);
     }
+
+    public function getProfitsAttribute($value)
+    {
+        return round($value, 2);
+    }
 }
