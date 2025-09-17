@@ -25,7 +25,7 @@ class ProfitsController extends Controller
             $final[] = [
                 'id' => $profit->id,
                 'account_id' => $profit->account_id,
-                'profits' => $profit->profits,
+                'profits' => round($profit->profits, 2),
                 'driver_name' => $profit->driver->user->username,
                 'driver_number' => $profit->driver->number,
                 'driver_place' => $profit->driver->place_of_residence,
@@ -45,9 +45,14 @@ class ProfitsController extends Controller
         ])['account_id'];
 
         $profits = $request->user()->driver->ads()->whereStatus('done')->sum('profits');
+        $in_progress = $request->user()->driver->ads()->whereStatus('in_progress')->sum('profits');
 
-        if($profits == 0) {
+        if($profits == 0 && $in_progress == 0) {
             return $this->generalResponse(null, 'You do not have any profits yet, please work harder!', 400);
+        }
+
+        if($profits == 0 && $in_progress > 0) {
+            return $this->generalResponse(null, 'Profits cannot be withdrawn until the advertising campaign period ends.', 400);
         }
 
         Profits::create([

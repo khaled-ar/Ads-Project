@@ -77,5 +77,6 @@ return [
     'Region Created Suuccessfully.' => 'Region Created Suuccessfully.',
     'Region Updated Suuccessfully.' => 'Region Updated Suuccessfully.',
     'Stackholder Account Created Successfully.' => 'Stackholder Account Created Successfully.',
-    'Profile Updated Successfully.' => 'Profile Updated Successfully.'
+    'Profile Updated Successfully.' => 'Profile Updated Successfully.',
+    'Profits cannot be withdrawn until the advertising campaign period ends.' => 'Profits cannot be withdrawn until the advertising campaign period ends.'
 ];
