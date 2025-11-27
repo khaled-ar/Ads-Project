@@ -9,6 +9,8 @@ use App\Http\Requests\Stackholders\Ads\{
     UpdateAdRequest
 };
 use App\Models\Ad;
+use App\Models\DriverTrip;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class AdsController extends Controller
@@ -18,7 +20,9 @@ class AdsController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(request()->user()->ads);
+        return $this->generalResponse(request()->user()->ads()->get([
+            'id', 'user_id', 'images', 'drivers_number', 'name', 'created_at'
+        ]));
     }
 
     /**
@@ -35,15 +39,21 @@ class AdsController extends Controller
      */
     public function show(ShowAdRequest $request, Ad $ad)
     {
-        return $this->generalResponse($ad->load('drivers.driver.user'));
+        $ad->total_steps = DriverTrip::whereAdId($ad->id)->sum('steps') . ' / ' . $ad->km_max;
+        $ad->city = (Region::whereName(explode(',', $ad->regions)[0])->first())->city;
+        $ad->country = $ad->city->country;
+        unset($ad->city->country);
+        $ad->load('drivers.driver.user');
+        unset($ad->drivers);
+        return $this->generalResponse($ad);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdRequest $request, Ad $ad)
+    public function update(Request $request, Ad $ad)
     {
-        return $this->generalResponse(['ad_id' => $request->update($ad)], 'Ad Updated Successfully');
+        //return $this->generalResponse(['ad_id' => $request->update($ad)], 'Ad Updated Successfully');
     }
 
     /**

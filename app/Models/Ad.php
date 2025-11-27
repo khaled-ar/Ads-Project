@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Files;
+use Illuminate\Support\Facades\File;
 
 
 class Ad extends Model
@@ -55,7 +56,21 @@ class Ad extends Model
         parent::boot();
 
         static::creating(function ($ad) {
-            $ad->user_id = request()->user()->id;
+            $user = request()->user();
+            $ad->user_id = $user->id;
+            if($user->role != 'ادمن') {
+                $ad->company_name = $ad->user->username;
+                $ad->terms = '';
+                $ad->drivers_number = 0;
+                $ad->km_price = 0;
+                $ad->km_min = 0;
+                $ad->km_max = 0;
+                $ad->centers = '';
+            }
+        });
+
+        static::deleting(function($ad) {
+            File::deleteDirectory(public_path("Ads/{$ad->id}"));
         });
 
         static::created(function($ad) {

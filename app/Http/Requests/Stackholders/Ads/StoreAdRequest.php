@@ -30,16 +30,9 @@ class StoreAdRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:100', 'unique:ads,name'],
             'description' => ['required', 'string', 'max:1000'],
-            'terms' => ['required', 'string', 'max:1000'],
-            'drivers_number' => ['required', 'integer', 'min:1'],
             'budget' => ['required', 'numeric'],
-            'km_price' => ['required', 'numeric'],
-            'km_min' => ['required', 'numeric', 'min:1'],
-            'km_max' => ['required', 'numeric', 'gt:km_min'],
-            'company_name' => ['required', 'string', 'max:100'],
             'regions' => ['required', 'string', 'max:100'],
             'duration' => ['required', 'integer', 'min:1'],
-            'centers' => ['required', 'string', 'max:1000'],
             'images' => ['required', 'array', 'between:1,10'],
             'images.*' => ['image', 'mimes:png,jpg', 'max:4096'],
         ];

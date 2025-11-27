@@ -16,6 +16,7 @@ use App\Models\{
     CarsYears,
     Center,
     City,
+    Country,
     DeliveryPrograms,
     Lable,
     Region
@@ -43,14 +44,20 @@ Route::get('years', fn () => ['data' => CarsYears::whereCarId(request('car_id'))
 // This route to get all avaliable delivery programs to use it in register request.
 Route::get('programs', fn () => ['data' => DeliveryPrograms::all()]);
 // This route to get all avaliable cities to use it in register request.
-Route::get('cities', fn () => ['data' => City::latest()->whereIsActive(1)->get()]);
+Route::get('countries', fn () => ['data' => Country::all()]);
+Route::get('cities', fn () => [
+    'data' => request('country_id') ?
+        City::latest()->whereIsActive(1)->whereCountryId(request('country_id'))->get()
+        :
+        City::latest()->whereIsActive(1)->get()
+]);
 // This route to get all avaliable regions to use it in register request.
 Route::get('regions', fn () => [
     'data' => request('city_id') ?
         Region::latest()->whereIsActive(1)->whereCityId(request('city_id'))->get()
         :
         Region::latest()->whereIsActive(1)->get()
-    ]);
+]);
 // This route to get all avaliable lables to use it in subscribe in ad request.
 Route::get('lables', fn () => ['data' => Lable::all()]);
 // This route to get all avaliable centers to use it in ad adding request.
@@ -81,6 +88,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.cars.php');
         // Delivery Programs Routes.
         include base_path('routes/dashboard.programs.php');
+        // Countries Routes.
+        include base_path('routes/dashboard.countries.php');
         // Cities Routes.
         include base_path('routes/dashboard.cities.php');
         // Regions Routes.

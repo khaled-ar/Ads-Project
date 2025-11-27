@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Region extends Model
+class Country extends Model
 {
     use HasFactory;
 
@@ -26,7 +26,7 @@ class Region extends Model
         'updated_at',
     ];
 
-    public function city() {
-        return $this->belongsTo(City::class);
+    public function cities() {
+        return $this->hasMany(City::class);
     }
 }

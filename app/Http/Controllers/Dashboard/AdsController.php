@@ -25,7 +25,8 @@ class AdsController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(Ad::status()->with(['user', 'drivers.driver'])->get());
+        return $this->generalResponse(Ad::status()->get(['id', 'status', 'name', 'created_at'])
+                                    ->makeHidden(['from', 'images_url', 'is_full']));
     }
 
     public function waiting_approval()
@@ -73,6 +74,9 @@ class AdsController extends Controller
 
     public function approve(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
+            if($dash_ad->km_price == 0) {
+                return $this->generalResponse(null, 'Campaign values ​​must be completed before approval', 400);
+            }
             $dash_ad->update(['status' => 'قيد العمل', 'created_at' => now()]);
             $dash_ad->user->notify(new DatabaseNotification('تهانينا لقد تم قبول الحملة من قبل الادمن', 'قبول الحملة', 'ad_approved'));
             $this->qr->generateQrCode($dash_ad);
@@ -83,7 +87,7 @@ class AdsController extends Controller
     public function reject(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
             $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected', request('notes')));
-            $dash_ad->delete();
+            $dash_ad->update(['notes' => request('notes'), 'status' => 'مرفوض']);
             return $this->generalResponse(null, 'Ad Rejected Successfully');;
         });
     }

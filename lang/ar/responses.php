@@ -78,5 +78,9 @@ return [
     'Region Updated Suuccessfully.' => 'تم تحديث المنطقة بنجاح.',
     'Stackholder Account Created Successfully.' => 'تم إنشاء حساب المعلن بنجاح.',
     'Profile Updated Successfully.' => 'تم تحديث الملف الشخصي بنجاح.',
-    'Profits cannot be withdrawn until the advertising campaign period ends.' => 'لا يمكن سحب الارباح حتى تنتهي مدة الحملة الاعلانية'
+    'Profits cannot be withdrawn until the advertising campaign period ends.' => 'لا يمكن سحب الارباح حتى تنتهي مدة الحملة الاعلانية',
+    'Country Created Suuccessfully.' => 'تم إنشاء البلد بنجاح.',
+    'Country Updated Suuccessfully.' => 'تم تحديث البلد بنجاح.',
+    'Country Deleted Suuccessfully.' =>  'تم حذف البلد بنجاح.',
+    'Campaign values ​​must be completed before approval' => 'يجب استكمال قيم الحملة قبل الموافقة عليها'
 ];

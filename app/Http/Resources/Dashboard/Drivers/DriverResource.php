@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Dashboard\Drivers;
 
 use App\Models\Driver;
+use App\Models\DriverTrip;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -38,6 +39,7 @@ class DriverResource extends ResourceCollection
             'driving_license_image_url' => $this->driver->driving_license_image_url,
             'car_mechanics_image_url' => $this->driver->personal_id_image_url,
             'lables' => $this->lables,
+            'total_steps' => DriverTrip::whereAdId(request('ad_id'))->whereDriverId($this->driver->id)->first()->steps,
             'appointement' => $this->driver->appointement,
         ];
     }
