@@ -42,6 +42,7 @@ class LoginRequest extends FormRequest
     public function getData() {
         $user = User::whereUsername($this->username)->first();
         $user->tokens()->delete();
+        $user->update(['fcm' => request('fcm')]);
         $user['token'] = $user->createToken($user->username)->plainTextToken;
         if($user->role == 'سائق') {
             $user->load('driver.ads');

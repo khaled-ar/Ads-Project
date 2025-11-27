@@ -27,6 +27,7 @@ class User extends Authenticatable
         'role',
         'account_status',
         'notes',
+        'fcm'
     ];
 
     /**
@@ -39,7 +40,8 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
-        'image'
+        'image',
+        'fcm'
     ];
 
     /**
@@ -53,6 +55,14 @@ class User extends Authenticatable
     ];
 
     protected $appends = ['image_url'];
+
+    /**
+     * Route notifications for the FCM channel.
+     */
+    public function routeNotificationForFcm($notification = null): ?string
+    {
+        return $this->fcm;
+    }
 
     public function getImageUrlAttribute() {
         return $this->image ? asset('Images') . "/{$this->id}/" . $this->image : null;

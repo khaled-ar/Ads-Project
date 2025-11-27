@@ -11,6 +11,7 @@ use App\Jobs\CalculateDriversProfits;
 use App\Models\Ad;
 use App\Models\DriverAd;
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use App\Services\QrService;
 use Illuminate\Support\Facades\DB;
 
@@ -75,10 +76,13 @@ class AdsController extends Controller
     public function approve(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
             if($dash_ad->km_price == 0) {
-                return $this->generalResponse(null, 'Campaign values ​​must be completed before approval', 400);
+                return $this->generalResponse(null, 'Campaign values ​must be completed before approval', 400);
             }
             $dash_ad->update(['status' => 'قيد العمل', 'created_at' => now()]);
-            $dash_ad->user->notify(new DatabaseNotification('تهانينا لقد تم قبول الحملة من قبل الادمن', 'قبول الحملة', 'ad_approved'));
+            $subject = 'اشعار قبول حملة';
+            $body = "تهانينا، لقد تم قبول حملة ({$dash_ad->name})";
+            $dash_ad->user->notify(new DatabaseNotification($body, $subject, 'ad_approved'));
+            $dash_ad->user->notify(new FcmNotification($subject, $body, ['ad_id' => $dash_ad->id]));
             $this->qr->generateQrCode($dash_ad);
             return $this->generalResponse(null, 'Ad Approved Successfully');
         });
@@ -86,7 +90,10 @@ class AdsController extends Controller
 
     public function reject(Ad $dash_ad) {
         return DB::transaction(function () use($dash_ad) {
-            $dash_ad->user->notify(new DatabaseNotification('للاسف لقد تم رفض الحملة من قبل الادمن', 'رفض الحملة', 'ad_rejected', request('notes')));
+            $subject = 'اشعار رفض حملة';
+            $body = "مع الاسف، تم رفض حملة ({$dash_ad->name})";
+            $dash_ad->user->notify(new DatabaseNotification($body, $subject, 'ad_rejected', request('notes')));
+            $dash_ad->user->notify(new FcmNotification($subject, $body, ['ad_id' => $dash_ad->id]));
             $dash_ad->update(['notes' => request('notes'), 'status' => 'مرفوض']);
             return $this->generalResponse(null, 'Ad Rejected Successfully');;
         });
