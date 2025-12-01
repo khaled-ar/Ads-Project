@@ -18,7 +18,7 @@ class EnsureDriverIsActive
         if ($request->user()->account_status != 'active') {
             return response()->json([
                 'case' => 1,
-                'message' => 'Your Account Not Active Yet.'
+                'message' => 'Nothing can be done before the manager approves the account.'
             ], 403);
         }
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Ad;
 use App\Models\Coordinate;
+use App\Models\DriverAd;
 use App\Models\DriverTrip;
 use Illuminate\Support\Facades\Cache;
 
@@ -67,7 +68,12 @@ class GPS {
             $driver_trip->save();
         }
 
-        return ['Tracking Data Saved Successfully.', 200];
+        $driver_ad = DriverAd::whereDriverId($driver_id)
+            ->whereAdId($ad_id)
+            ->first();
+        $driver_ad->increment('steps', $steps);
+
+        return ['Tracking Data Saved Successfully.', 200, round($driver_ad->steps, 2)];
     }
 
     public function match_tts($traffic, $time, $sector) {

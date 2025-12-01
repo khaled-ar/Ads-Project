@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Models\User;
 use App\Notifications\EmailVerificationCode;
+use App\Services\Whatsapp;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ResendCodeRequest extends FormRequest
@@ -30,7 +31,11 @@ class ResendCodeRequest extends FormRequest
 
     public function resend() {
         $user = User::whereUsername($this->username)->first();
-        $user->notify(new EmailVerificationCode());
-        return 'The code has been resent successfully.';
+        if($user->email) {
+            $user->notify(new EmailVerificationCode());
+        } else {
+            Whatsapp::send_code($user->driver->number);
+        }
+        return 'The code has been sent successfully.';
     }
 }

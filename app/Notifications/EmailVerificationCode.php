@@ -36,15 +36,15 @@ class EmailVerificationCode extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $code = Str::random(6);
-        Cache::put($notifiable->email, $code, 60 * 60);
+        $code = substr(str_shuffle('0123456789'), 0, 6);
+        Cache::put($notifiable->email, $code, 60 * 5);
 
         if(config('app.locale') == 'ar') {
             return (new MailMessage)
                 ->subject('تأكيد الحساب')
                 ->greeting("مرحبًا {$notifiable->username}،")
                 ->line('لقد تم إرسال هذا البريد إليك لتأكيد حسابك، يرجى تأكيد بريدك الإلكتروني باستخدام الكود أدناه.')
-                ->line("كود التأكيد الخاص بك صالح لمدة ساعة واحدة فقط")
+                ->line("كود التأكيد الخاص بك صالح لمدة خمسة دقائق فقط")
               	->line($code)
                 ->line('شكرًا لاستخدامك تطبيقنا!');
         }
@@ -53,7 +53,7 @@ class EmailVerificationCode extends Notification
                     ->subject('Account Verification')
                     ->greeting("Hello {$notifiable->username},")
                     ->line('This mail was sent to you for account verification, so please verify your email using the code below.')
-                    ->line("Your Verification Code: {$code} (Valid for 1 hour only).")
+                    ->line("Your Verification Code: {$code} (Valid for 5 minutes only).")
                     ->line('Thank you for using our application!');
     }
 

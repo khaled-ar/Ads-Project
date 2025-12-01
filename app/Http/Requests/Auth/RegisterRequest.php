@@ -10,6 +10,7 @@ use App\Notifications\{
     DatabaseNotification,
     EmailVerificationCode
 };
+use App\Services\Whatsapp;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
@@ -33,14 +34,14 @@ class RegisterRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string', 'between:3,15', 'unique:users,username'],
-            'email' => ['required', 'email', 'unique:users,email'],
+            'email' => ['nullable', 'required_without:number', 'email', 'unique:users,email'],
             'place_of_residence' => ['required', 'string', 'exists:regions,name'],
             'work_status' => ['required', 'string', 'in:سائق حر,يعمل ضمن برنامج توصيل,لا يعمل ضمن أي برنامج'],
             'program_name' => ['required_if:work_status,يعمل ضمن برنامج توصيل', 'string', 'exists:delivery_programs,name'],
             'birth_date' => ['required', 'date'],
             'km_per_day' => ['required', 'integer', 'min:1'],
             'km_per_month' => ['required', 'integer', 'min:1'],
-            'number' => ['required', 'string', 'between:3,15'],
+            'number' => ['nullable', 'required_without:email', 'string'],
             'nationality' => ['required', 'string', 'in:سوري,مصري'],
             'gender' => ['required', 'string', 'in:انثى,ذكر'],
             'car_model' => ['required', 'string', 'exists:cars,name'],
@@ -74,7 +75,11 @@ class RegisterRequest extends FormRequest
             $data = $this->except(['username', 'password', 'program_name', 'email', 'ip_address']);
             $data['user_id'] = $user->id;
             Driver::create($data);
-            $user->notify(new EmailVerificationCode());
+            if($this->email) {
+                $user->notify(new EmailVerificationCode());
+            } else {
+                Whatsapp::send_code($this->number);
+            }
             $admin = User::whereRole('ادمن')->first();
             $subject = "لقد تم انشاء حساب سائق جديد، يرجى الاطلاع";
             $body = [
@@ -84,7 +89,7 @@ class RegisterRequest extends FormRequest
 
             $admin->notify(new DatabaseNotification($body, $subject, 'new_driver'));
 
-            return 'Please confirm your email now, your membership request is under review by the system administrator.';
+            return 'Please confirm your account now, your membership request is under review by the system administrator.';
         });
     }
 }

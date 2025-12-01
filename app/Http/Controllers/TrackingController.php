@@ -18,6 +18,6 @@ class TrackingController extends Controller
                                                 $request->time,
                                                 $request->sector
                                             );
-        return $this->generalResponse(null, $res[0], $res[1]);
+        return $this->generalResponse($res[2], $res[0], $res[1]);
     }
 }

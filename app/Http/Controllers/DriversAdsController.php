@@ -6,6 +6,7 @@ use App\Http\Requests\Drivers\ShowAdDetailsRequest;
 use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
 use App\Models\DriverAd;
+use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
 
 class DriversAdsController extends Controller
@@ -27,7 +28,9 @@ class DriversAdsController extends Controller
     }
 
     public function available_ads() {
-        $ads = Ad::filter()->with('user')->whereStatus('قيد العمل')->get();
+        $ads = Ad::filter()->whereStatus('قيد العمل')->get([
+            'id', 'user_id', 'images', 'drivers_number', 'km_price', 'name', 'company_name', 'created_at'
+        ]);
         return $this->generalResponse($ads);
     }
 
@@ -51,6 +54,7 @@ class DriversAdsController extends Controller
             return $this->generalResponse(null, 'There is an error.', 400);
         }
 
+        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة الاعلانية قد بدأت'));
         return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }

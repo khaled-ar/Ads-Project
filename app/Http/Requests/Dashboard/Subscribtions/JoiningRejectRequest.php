@@ -4,6 +4,7 @@ namespace App\Http\Requests\Dashboard\Subscribtions;
 
 use App\Models\DriverAd;
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -35,6 +36,7 @@ class JoiningRejectRequest extends FormRequest
             $driver = $driver_ad->driver;
             $body = "لقد تم رفض طلب انضمامك الى الحملة الاعلانية {$driver_ad->ad->name}";
             $subject = 'طلب الانضمام الى الحملة الاعلانية';
+            $driver->user->notify(new FcmNotification($subject, $body));
             $driver->user->notify(new DatabaseNotification($body, $subject, 'joining_rejected', $this->notes));
             $driver_ad->delete();
         });

@@ -18,24 +18,24 @@ class EmailController extends Controller
             'username' => ['required', 'string', 'exists:users,username']
         ]);
 
-        $email = User::whereUsername($request->username)->first()->email ?? null;
-        $user_data = Cache::get($email) ?? null;
+        $user = User::whereUsername($request->username)->first() ?? null;
+        $user_data = Cache::get($user->email ?? $user->driver->number) ?? null;
+
         if(! $user_data) {
             return $this->generalResponse(null, 'Please Request the Code again', 400);
         }
         if($request->code != $user_data) {
             return $this->generalResponse(null, 'Please Ckeck the Code', 400);
         }
-        User::whereEmail($email)->update([
+        $user->update([
             'email_verified_at' => now()
         ]);
-        Cache::forget($email);
-        return $this->generalResponse(null, 'Email Verified Successfully');
+        Cache::forget($user->email ?? $user->driver->number);
+        return $this->generalResponse(null, 'Account Verified Successfully');
     }
 
-    public function forgot_password(ForgotPasswordRequest $request) {
-        $request->send_email();
-        return $this->generalResponse(null, 'Verification Code was Sent Successfully to your email');
+    public function forgot_password(ResendCodeRequest $request) {
+        return $this->generalResponse(null, $request->resend());
     }
 
     public function resend_code(ResendCodeRequest $request) {

@@ -40,11 +40,7 @@ class AdsController extends Controller
     public function show(ShowAdRequest $request, Ad $ad)
     {
         $ad->total_steps = DriverTrip::whereAdId($ad->id)->sum('steps') . ' / ' . $ad->km_max;
-        $ad->city = (Region::whereName(explode(',', $ad->regions)[0])->first())->city;
-        $ad->country = $ad->city->country;
-        unset($ad->city->country);
         $ad->load('drivers.driver.user');
-        unset($ad->drivers);
         return $this->generalResponse($ad);
     }
 

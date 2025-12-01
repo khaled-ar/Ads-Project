@@ -92,8 +92,13 @@ class Ad extends Model
     }
 
     public function scopeFilter($query) {
-        $region = request('region') ?? request()->user()->driver->place_of_residence;
-        $query->where('regions', 'like', "%$region%");
+
+        if(request('country')) {
+            $query->where('country', request('country'));
+        }
+        if(request('city')) {
+            $query->where('city', request('city'));
+        }
         if(request('km_price')) {
             $query->where('km_price', '>=', request('km_price'));
         }

@@ -24,7 +24,7 @@ class AuthController extends Controller
     }
 
     public function register(RegisterRequest $request) {
-        return $this->generalResponse($request->store(), null, 201);
+        return $this->generalResponse(null, $request->store(), 201);
     }
 
     public function reset_password(ResetPasswordRequest $request) {

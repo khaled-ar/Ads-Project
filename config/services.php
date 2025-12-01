@@ -14,6 +14,8 @@ return [
     |
     */
 
+    'whatsapp_api_key' => env('WHATSAPP_API_KEY'),
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

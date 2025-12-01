@@ -15,6 +15,7 @@ use App\Models\{
     Driver
 };
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Support\Facades\DB;
 
 class DriversController extends Controller
@@ -74,7 +75,10 @@ class DriversController extends Controller
             $driver->user()->update([
                 'account_status' => 'active'
             ]);
-            $driver->user->notify(new DatabaseNotification('تهانينا لقد تم قبول حسابك من قبل الادمن', 'طلب انضمام', 'account_status'));
+            $subject = 'اشعار قبول انضمام للنظام';
+            $body = "تهانينا، لقد تم قبول انضمامك للنظام";
+            $driver->user->notify(new FcmNotification($subject, $body));
+            $driver->user->notify(new DatabaseNotification($body, $subject, 'account_status'));
             return $this->generalResponse(null, 'Account Approved Successfully');;
         });
     }
@@ -86,7 +90,12 @@ class DriversController extends Controller
                 'notes' => request('notes'),
                 'rejected_at' => now()
             ]);
-            $driver->user->notify(new DatabaseNotification('للاسف لقد تم رفض حسابك من قبل الادمن، الرجاء مراجعة سبب الرفض واعادة طلب الانضمام خلال يوم او يومين وشكرا', 'طلب انضمام', 'account_status', request('notes')));
+            $reason = request('notes');
+            $subject = 'اشعار رفض انضمام للنظام';
+            $body = "مع الاسف، تم رفض طلب الانضمام للنظام";
+            $body = $body . "، سبب الرفض: ({$reason})";
+            $driver->user->notify(new FcmNotification($subject, $body));
+            $driver->user->notify(new DatabaseNotification($body, $subject, 'account_status', $reason));
             return $this->generalResponse(null, 'Account Rejected Successfully');;
         });
     }
