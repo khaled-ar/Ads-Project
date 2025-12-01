@@ -21,7 +21,7 @@ class AdsController extends Controller
     public function index()
     {
         return $this->generalResponse(request()->user()->ads()->get([
-            'id', 'user_id', 'images', 'drivers_number', 'name', 'created_at'
+            'id', 'user_id', 'images', 'drivers_number', 'name', 'created_at', 'status'
         ]));
     }
 
