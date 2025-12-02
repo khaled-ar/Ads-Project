@@ -12,8 +12,12 @@ use App\Models\Ad;
 use App\Models\DriverAd;
 use App\Notifications\DatabaseNotification;
 use App\Notifications\FcmNotification;
+use App\Services\CsvExportService;
 use App\Services\QrService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response as ResponseFacade;
+
 
 class AdsController extends Controller
 {
@@ -97,5 +101,56 @@ class AdsController extends Controller
             $dash_ad->update(['notes' => request('notes'), 'status' => 'مرفوض']);
             return $this->generalResponse(null, 'Ad Rejected Successfully');;
         });
+    }
+
+    public function export_to_csv(Request $request, CsvExportService $exporter) {
+        $ads = Ad::whereStatus('منتهية')->get();
+        if ($ads->isEmpty()) {
+            return $this->generalResponse(null, 'No Ads Yet', 400);
+        }
+        $headers = [
+            'id',
+            'company_name',
+            'name',
+            'images_count',
+            'terms',
+            'drivers_number',
+            'budget',
+            'step_price',
+            'country',
+            'city',
+            'regions',
+            'min_steps',
+            'max_steps',
+            'created_at',
+        ];
+
+        $rows = [];
+        foreach ($ads as $ad) {
+            $row = [];
+            foreach ($headers as $header) {
+                if($header == 'images_count') {
+                    $row[] = count($ad->images_url ?? []);
+                    continue;
+                }
+                if($header == 'step_price') {
+                    $row[] = $ad->km_price;
+                    continue;
+                }
+                if($header == 'min_steps') {
+                    $row[] = $ad->km_min;
+                    continue;
+                }
+                if($header == 'max_steps') {
+                    $row[] = $ad->km_max;
+                    continue;
+                }
+                $row[] = $ad->{$header} ?? '';
+            }
+            $rows[] = $row;
+        }
+
+        $filename = $exporter->export($headers, $rows, 'ended_campaigns.csv');
+        return $this->generalResponse(['path' => asset("Exports/$filename")]);
     }
 }

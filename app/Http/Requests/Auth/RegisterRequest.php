@@ -8,7 +8,8 @@ use App\Models\{
 };
 use App\Notifications\{
     DatabaseNotification,
-    EmailVerificationCode
+    EmailVerificationCode,
+    FcmNotification
 };
 use App\Services\Whatsapp;
 use Illuminate\Foundation\Http\FormRequest;
@@ -86,7 +87,7 @@ class RegisterRequest extends FormRequest
                 'driver_name' => $user->username,
                 'driver_number' => $user->driver->number,
             ];
-
+            $admin->notify(new FcmNotification($subject, "يريد {$user->username} الانضمام الى النظام"), ['driver_id' => $user->driver->id]);
             $admin->notify(new DatabaseNotification($body, $subject, 'new_driver'));
 
             return 'Please confirm your account now, your membership request is under review by the system administrator.';

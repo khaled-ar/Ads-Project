@@ -3,28 +3,30 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\Stackholders\{
-    StoreStackholderRequest,
-};
 use App\Models\User;
+use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
 
-class StackholdersController extends Controller
+class NotificationsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return $this->generalResponse(User::whereRole('معلن')->with('ads')->get(), null, 200);
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStackholderRequest $request)
+    public function store(Request $request)
     {
-        return $this->generalResponse(null, $request->store(), 201);
+        $request->validate(['title' => ['required', 'string'], 'body' => ['required', 'string']]);
+        User::whereRole('سائق')->get()->map(function($user) use($request) {
+            $user->notify(new FcmNotification($request->title, $request->body));
+        });
+        return $this->generalResponse(null);
     }
 
     /**
@@ -48,7 +50,6 @@ class StackholdersController extends Controller
      */
     public function destroy(string $id)
     {
-        User::whereId($id)->delete();
-        return $this->generalResponse(null, 'Stackholder Deleted Successfully.', 200);
+        //
     }
 }

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\{
     Notification,
 };
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -59,8 +60,10 @@ class StoreRequest extends FormRequest
             $appointment->ForceFill(['status' => 'to do'])->save();
 
             $admin = User::whereRole('ادمن')->first();
+            $driver_name = $this->user()->username;
             $subject = "لقد تم حجز موعد جديد، يرجى الاطلاع";
-            $body = "معرف الحملة الاعلانية {$appointment->id}, معرف السائق {$driver_id}";
+            $body = "نود اعلامك بان السائق {$driver_name} قام بحجز موعد في مركز {$this->center_name} في الساعة {$this->time} في اليوم {$appointment->work_day->day}";
+            $admin->notify(new FcmNotification($subject, $body, ['center_id' => $center_id]));
             Notification::send([$admin, $ad->user], new DatabaseNotification($body, $subject, 'new_appointement'));
             return ['Your appointment has been booked successfully.', 201];
         });

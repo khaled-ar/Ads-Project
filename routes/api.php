@@ -106,6 +106,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('stories', [StoriesController::class, 'store']);
         // Home Page Routes
         Route::apiResource('home', HomeController::class);
+        // Notifications Routes.
+        include base_path('routes/dashboard.notifications.php');
     });
 
     // Stackholders Routes.
