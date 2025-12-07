@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\{
 class Whatsapp {
 
     public static function send_code($number) {
-/*return json_decode(static::check_limit());
-        $can_send_message = json_decode(static::check_limit())->data->can_send_message;
-        if(! $can_send_message) {
-            return false;
-        }*/
-
         $code = substr(str_shuffle('0123456789'), 0, 6);
 
         $response = Http::withoutVerifying()->withHeaders([
@@ -24,28 +18,16 @@ class Whatsapp {
             'Content-Type' => 'application/json',
             'x-api-key' => config('services.whatsapp_api_key')
         ])
-        ->post('https://hypermsg.net/api/whatsapp/messages/send', [
-            'whatsapp_number_id' => 32,
+        ->post('https://staging.hypermsg.net/api/whatsapp/send-message', [
+            'whatsapp_number_id' => 12,
             'phone_number' => $number,
             'message' => "رمز التحقق الخاص بك هو: {$code} لا تشاركه مع احد، علما انه صالح لمدة خمس دقائق فقط",
         ]);
-
         if ($response->successful()) {
             Cache::put($number, $code, 60 * 5);
             return true;
         }
         Log::error($response->body());
-    }
-
-    public static function check_limit() {
-
-        $response = Http::withoutVerifying()->withHeaders([
-            'Accept' => 'application/json',
-            'x-api-key' => config('services.whatsapp_api_key')
-        ])
-        ->get('https://hypermsg.net/api/whatsapp/messages/limits');
-
-        return $response;
     }
 
 }
