@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Dashboard\Drivers\DriverResource;
 use App\Http\Resources\GetSubscribtions;
 use App\Models\DriverAd;
+use App\Services\GPS;
 use Illuminate\Http\Request;
 
 class SubscribtionsController extends Controller
@@ -26,6 +27,22 @@ class SubscribtionsController extends Controller
             return $formatted_driver;
         });
         return $this->generalResponse($subscribtions);
+    }
+
+    public function coordinates() {
+        $subscribtions = DriverAd::whereAdId(request('ad_id'))->with('driver.user')->get()->map(function($subscribtion) {
+            $coordinates = (new GPS())->get($subscribtion->driver_id);
+            $formatted_driver = [
+                'driver_id' => $subscribtion->driver_id,
+                'driver_name' => $subscribtion->driver->user->username,
+                'lon' => $coordinates['lon'] ?? null,
+                'lat' => $coordinates['lat'] ?? null,
+            ];
+            unset($subscribtion->driver);
+            return $formatted_driver;
+        });
+        return $this->generalResponse($subscribtions);
+
     }
 
     /**

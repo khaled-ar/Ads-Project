@@ -18,8 +18,8 @@ class Whatsapp {
             'Content-Type' => 'application/json',
             'x-api-key' => config('services.whatsapp_api_key')
         ])
-        ->post('https://staging.hypermsg.net/api/whatsapp/send-message', [
-            'whatsapp_number_id' => 12,
+        ->post('https://hypermsg.net/api/whatsapp/messages/send', [
+            'whatsapp_number_id' => 42,
             'phone_number' => $number,
             'message' => "رمز التحقق الخاص بك هو: {$code} لا تشاركه مع احد، علما انه صالح لمدة خمس دقائق فقط",
         ]);
