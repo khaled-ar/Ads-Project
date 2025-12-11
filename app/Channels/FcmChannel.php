@@ -15,13 +15,15 @@ class FcmChannel
     public function send(object $notifiable, Notification $notification): void
     {
         $message = $notification->toFcm($notifiable);
-        Log::info('FCM notification runnig...: ');
+        Log::info('FCM notification running...');
 
         if (!$message) {
             Log::info('No message');
             return;
         }
+
         $token = $notifiable->routeNotificationForFcm($notification);
+
         if (empty($token)) {
             Log::info('No token');
             return;
@@ -29,10 +31,15 @@ class FcmChannel
 
         try {
             $messaging = Firebase::messaging();
-            // Send to single device
-            $result = $messaging->send($message, $token);
+
+            // Set the token on the message
+            $message = $message->withChangedTarget('token', $token);
+
+            // Send the message
+            $result = $messaging->send($message);
+
             Log::info('FCM notification sent successfully: ' . $token);
-            Log::info('With result: ' . $result);
+            Log::info('With result: ' . json_encode($result));
         } catch (\Exception $e) {
             Log::error('FCM notification failed: ' . $e->getMessage());
         }
