@@ -4,6 +4,7 @@ namespace App\Http\Requests\Drivers;
 
 use App\Models\User;
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\{
     DB,
@@ -44,6 +45,7 @@ class SubscribeInAdRequest extends FormRequest
             $admin = User::whereRole('ادمن')->first();
             $body = "لقد قام {$driver->username} بتقديم طلب انضمام الى الحملة {$ad->name}";
             $subject = 'طلب انضمام جديد';
+            $admin->notify(new FcmNotification($subject, $body));
             Notification::send([$admin, $ad->user], new DatabaseNotification($body, $subject, 'new_subscribtion'));
             return ['Subscribtion Requested Successfully, Please Wait for Admin Approval.', 201];
         });
