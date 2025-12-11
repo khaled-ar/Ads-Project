@@ -27,7 +27,8 @@ class User extends Authenticatable
         'role',
         'account_status',
         'notes',
-        'fcm'
+        'fcm',
+        'email_verified_at'
     ];
 
     /**

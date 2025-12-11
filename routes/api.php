@@ -120,7 +120,7 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     // Drivers Routes.
-    Route::prefix('drivers')->middleware(['driver', 'verified', 'active'])->group(function() {
+    Route::prefix('drivers')->middleware(['driver', /*'verified',*/ 'active'])->group(function() {
         // Ads Routes.
         include base_path('routes/drivers.ads.php');
         // Tracking Routes
