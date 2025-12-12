@@ -23,7 +23,7 @@ class CoordinatesController extends Controller
      */
     public function store(StoreCoordinatesRequest $request)
     {
-        $user_id = $request->user()->id;
+        $user_id = $request->user()->driver->id;
         return $this->generalResponse($this->gps->set($user_id, $request->lat, $request->lon));
     }
 
