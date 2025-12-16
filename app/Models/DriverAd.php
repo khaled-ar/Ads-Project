@@ -25,7 +25,7 @@ class DriverAd extends Model
     ];
 
     public function driver() {
-        return $this->belongsTo(Driver::class)->select();
+        return $this->belongsTo(Driver::class);
     }
 
     public function ad() {
