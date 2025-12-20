@@ -118,7 +118,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('subscribtions', [SubscribtionsController::class, 'index']);
         Route::get('subscribtions/driver', [SubscribtionsController::class, 'driver']);
     });
-    Route::get('subscribtions/coordinates', [SubscribtionsController::class, 'coordinates'])->name('subscribtions.coordinates');
+    Route::get('stackholders/subscribtions/coordinates', [SubscribtionsController::class, 'coordinates'])->name('subscribtions.coordinates');
 
     // Drivers Routes.
     Route::prefix('drivers')->middleware(['driver', /*'verified',*/ 'active'])->group(function() {

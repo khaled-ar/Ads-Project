@@ -18,9 +18,9 @@ class SubscribtionsController extends Controller
     {
         $subscribtions = DriverAd::whereAdId(request('ad_id'))->with('driver.user')->get()->map(function($subscribtion) {
             $formatted_driver = [
-                'id' => $subscribtion->driver->id,
-                'name' => $subscribtion->driver->user->username,
-                'image_url' => $subscribtion->driver->user->image_url,
+                'id' => $subscribtion->driver->id ?? 0,
+                'name' => $subscribtion->driver->user->username ?? '',
+                'image_url' => $subscribtion->driver->user->image_url ?? '',
                 'status' => $subscribtion->status,
             ];
             unset($subscribtion->driver);
@@ -34,7 +34,7 @@ class SubscribtionsController extends Controller
             $coordinates = (new GPS())->get($subscribtion->driver_id);
             $formatted_driver = [
                 'driver_id' => $subscribtion->driver_id,
-                'driver_name' => $subscribtion->driver->user->username,
+                'driver_name' => $subscribtion->driver->user->username ?? '',
                 'lon' => $coordinates['lon'] ?? null,
                 'lat' => $coordinates['lat'] ?? null,
             ];
