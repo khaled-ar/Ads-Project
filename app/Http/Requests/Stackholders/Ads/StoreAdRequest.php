@@ -7,6 +7,7 @@ use App\Models\{
     User
 };
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -49,6 +50,7 @@ class StoreAdRequest extends FormRequest
             $body = "لقد تمت عملية اضافة اعلان جديد من خلال: {$ad->user->username}";
             $subject = 'لديك اعلان جديد';
             $admin->notify(new DatabaseNotification($body, $subject, 'new_ad'));
+            $admin->notify(new FcmNotification($subject, $body));
             return $ad->id;
         });
     }
