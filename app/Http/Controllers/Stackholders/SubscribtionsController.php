@@ -16,7 +16,7 @@ class SubscribtionsController extends Controller
      */
     public function index()
     {
-        $subscribtions = DriverAd::whereAdId(request('ad_id'))->with('driver.user')->get()->map(function($subscribtion) {
+        $subscribtions = DriverAd::whereAdId(request('ad_id'))->whereHas('driver')->with('driver.user')->get()->map(function($subscribtion) {
             $formatted_driver = [
                 'id' => $subscribtion->driver->id ?? 0,
                 'name' => $subscribtion->driver->user->username ?? '',

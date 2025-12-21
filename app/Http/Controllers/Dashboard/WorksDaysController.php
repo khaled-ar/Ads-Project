@@ -29,26 +29,26 @@ class WorksDaysController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(WorksDays $work_day)
+    public function show(WorksDays $works_day)
     {
-        return $this->generalResponse($work_day);
+        return $this->generalResponse($works_day);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWorkDayRequest $request, WorksDays $work_day)
+    public function update(UpdateWorkDayRequest $request, WorksDays $works_day)
     {
-        $request->update($work_day);
+        $request->update($works_day);
         return $this->generalResponse(null, 'Work Day Updated Successfully', 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorksDays $work_day)
+    public function destroy(WorksDays $works_day)
     {
-        $work_day->delete();
+        $works_day->delete();
         return $this->generalResponse(null, 'Work Day Deleted Successfully', 200);
     }
 }
