@@ -56,11 +56,16 @@ class AppointementsResource extends JsonResource
     {
         $times = [];
 
-        $startTime = Carbon::createFromFormat('g A', "$startHour AM");
-        $endTime = Carbon::createFromFormat('g A', "$endHour PM");
+        $startTime = Carbon::createFromTime($startHour, 0, 0); // 24-hour format
+        $endTime = Carbon::createFromTime($endHour, 0, 0); // 24-hour format
+
+        // If end time is earlier than start time, add 1 day
+        if ($endTime->lessThan($startTime)) {
+            $endTime->addDay();
+        }
 
         while ($startTime->lessThanOrEqualTo($endTime)) {
-            $times[] = $startTime->format('g:i A');
+            $times[] = $startTime->format('g:i A'); // Still output as 12-hour format
             $startTime->addHour();
         }
 
