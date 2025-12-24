@@ -28,7 +28,7 @@ class DriversAdsController extends Controller
     }
 
     public function available_ads() {
-        $ads = Ad::filter()->whereStatus('قيد العمل')->get([
+        $ads = Ad::filter()->latest()->whereStatus('قيد العمل')->get([
             'id', 'user_id', 'images', 'drivers_number', 'km_price', 'name', 'company_name', 'created_at'
         ]);
         return $this->generalResponse($ads);
