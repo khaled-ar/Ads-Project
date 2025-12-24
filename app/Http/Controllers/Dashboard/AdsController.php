@@ -10,6 +10,7 @@ use App\Http\Requests\Dashboard\Ads\{
 use App\Jobs\CalculateDriversProfits;
 use App\Models\Ad;
 use App\Models\DriverAd;
+use App\Models\DriverTrip;
 use App\Notifications\DatabaseNotification;
 use App\Notifications\FcmNotification;
 use App\Services\CsvExportService;
@@ -53,6 +54,7 @@ class AdsController extends Controller
      */
     public function show(Ad $dash_ad)
     {
+        $dash_ad->total_steps = DriverTrip::whereAdId($dash_ad->id)->sum('steps') . ' / ' . $dash_ad->km_max;
         return $this->generalResponse($dash_ad->load(['user', 'drivers.driver.user']));
     }
 
