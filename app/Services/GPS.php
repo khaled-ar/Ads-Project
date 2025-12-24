@@ -59,7 +59,7 @@ class GPS {
         } else {
             $km_max = Ad::whereId($ad_id)->first()->km_max;
             if($driver_trip->steps >= $km_max) {
-                return ['The Steps Count Reached To The Maximum Value.', 400];
+                return ['The Steps Count Reached To The Maximum Value.', 400, $driver_trip->steps];
             }
 
             $driver_trip->increment('distance', $distance);
