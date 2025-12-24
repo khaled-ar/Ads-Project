@@ -75,6 +75,7 @@ class RegisterRequest extends FormRequest
             ]);
             $data = $this->except(['username', 'password', 'program_name', 'email', 'ip_address']);
             $data['user_id'] = $user->id;
+            $data['place_of_residence'] = '';
             Driver::create($data);
             if($this->email) {
                 $user->notify(new EmailVerificationCode());
