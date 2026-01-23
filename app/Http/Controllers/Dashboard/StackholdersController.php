@@ -16,7 +16,7 @@ class StackholdersController extends Controller
      */
     public function index()
     {
-        return $this->generalResponse(User::whereRole('معلن')->with('ads')->get(), null, 200);
+        return $this->generalResponse(User::whereRole('معلن')->with(['ads', 'stackholder'])->get(), null, 200);
     }
 
     /**

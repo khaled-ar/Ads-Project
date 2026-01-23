@@ -85,6 +85,10 @@ class User extends Authenticatable
         return $this->hasOne(Driver::class);
     }
 
+    public function stackholder() {
+        return $this->hasOne(Stackholders::class);
+    }
+
     public function ads() {
         return $this->hasMany(Ad::class);
     }
