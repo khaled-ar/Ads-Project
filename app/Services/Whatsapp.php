@@ -13,7 +13,7 @@ class Whatsapp {
     public static function send_code($number) {
         $code = substr(str_shuffle('0123456789'), 0, 6);
 
-        $response = Http::withoutVerifying()->withHeaders([
+        $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
             'x-api-key' => config('services.whatsapp_api_key')
