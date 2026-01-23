@@ -27,11 +27,8 @@ class UpdateProfileRequest extends FormRequest
     {
         $user = request()->user();
         return [
-            'username' => ['string', 'between:3,15', 'unique:users,username,' . $user->id . ',id'],
-            'email' => ['email', 'unique:users,email,' . $user->id . ',id'],
             'age' => ['integer', 'between:18,45'],
             'number' => ['string', 'between:3,15'],
-            'car_number' => ['string', 'between:3,50'],
             'car_year' => ['integer', 'digits:4'],
             'car_name' => ['string', 'between:3,50'],
             'image' => ['image', 'mimes:png,jpg', 'max:4096'],
@@ -50,11 +47,9 @@ class UpdateProfileRequest extends FormRequest
         return DB::transaction(function() {
             $user = request()->user();
             $user->update([
-                'username' => $this->username ? $this->username :$user->username,
-                'email' => $this->email ? $this->email :$user->email,
                 'password' => $this->password ? $this->password :$user->password,
             ]);
-            $user->driver()->update($this->except(['image', 'username', 'email', 'password', '_method']));
+            $user->driver()->update($this->except(['image', 'password', '_method']));
             if($this->hasFile('image')) {
                 if(! is_null($user->image)) {
                     Files::deleteFile(public_path('Images') . "$user->id/$user->image");
