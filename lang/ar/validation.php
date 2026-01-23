@@ -219,6 +219,7 @@ return [
         'car_color'                => 'لون السيارة',
         'car_number'               => 'رقم السيارة',
         'car_year'                 => 'سنة صنع السيارة',
+        'car model'                => 'موديل السيارة',
         'program_name'             => 'اسم البرنامج',
         'drivers_number'           => 'عدد السائقين',
         'budget'                   => 'الميزانية',
