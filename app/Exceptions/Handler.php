@@ -65,11 +65,11 @@ class Handler extends ExceptionHandler
             ]);
         }
 
-        // if ($e instanceof QueryException) {
-        //     return response()->json([
-        //         'message' => __('responses.error_500'),
-        //     ], 500);
-        // }
+        if ($e instanceof QueryException) {
+            return response()->json([
+                'message' => __('responses.error_500'),
+            ], 500);
+        }
 
         if ($e instanceof ValidationException) {
             $res_errors = collect($e->errors())

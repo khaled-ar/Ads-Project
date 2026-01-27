@@ -33,7 +33,7 @@ class UpdateProfileRequest extends FormRequest
             'car_year' => ['integer', 'digits:4'],
             'car_name' => ['string', 'between:3,50'],
             'image' => ['image', 'mimes:png,jpg', 'max:4096'],
-            'password' => ['string',
+            'password' => ['string', 
                 Password::min(8)
                     ->max(25)
                     ->numbers()
