@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Drivers\ShowAdDetailsRequest;
 use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
+use App\Models\Appointement;
 use App\Models\DriverAd;
 use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
@@ -44,11 +45,25 @@ class DriversAdsController extends Controller
         return $this->generalResponse(null, $res[0], $res[1]);
     }
 
+    public function start_pause_ad(Request $request, int $ad_id) {
+        DriverAd::whereAdId($ad_id)
+            ->whereDriverId(request()->user()->driver->id)
+            ->whereStatus('in_progress')
+            ->update(['is_paused' => $request->is_paused]);
+
+        return $this->generalResponse(null, null, 200);
+    }
+
     public function make_inprogress(Request $request) {
         $subscription = DriverAd::whereAdId($request->ad_id)
             ->whereDriverId($request->user()->driver->id)
             ->whereStatus('appointement_booking')
             ->update(['status' => 'in_progress']);
+
+        Appointement::whereAdId($request->ad_id)
+            ->whereDriverId($request->user()->driver->id)
+            ->whereStatus('to do')
+            ->update(['status' => 'done']);
 
         if(! $subscription) {
             return $this->generalResponse(null, 'There is an error.', 400);
