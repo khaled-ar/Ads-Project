@@ -19,6 +19,7 @@ class UpdateCenterRequest extends FormRequest
         return [
             'name' => ['string', 'max:200', 'unique:centers,name,' . $this->center->id . ',id'],
             'region_id' => ['nullable', 'integer', 'exists:regions,id'],
+            'location' => ['nullable', 'string'],
         ];
     }
 
