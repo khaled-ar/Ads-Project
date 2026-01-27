@@ -37,14 +37,6 @@ class UpdateDriverRequest extends FormRequest
             'car_number' => ['string', 'between:3,50'],
             'car_year' => ['integer', 'digits:4'],
             'details_file' => ['file', 'mimes:pdf', 'max:4096'],
-            'password' => ['string',
-                Password::min(8)
-                    ->max(25)
-                    ->numbers()
-                    ->symbols()
-                    ->mixedCase()
-                    ->uncompromised()
-                ]
         ];
     }
 
@@ -52,8 +44,7 @@ class UpdateDriverRequest extends FormRequest
         $user = $driver->user;
         $user->update([
             'username' => $this->username,
-            'password' => $this->password
         ]);
-        $driver->update($this->except(['details_file', 'username', 'password', '_method']));
+        $driver->update($this->except(['details_file', 'username', '_method']));
     }
 }

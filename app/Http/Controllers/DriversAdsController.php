@@ -20,7 +20,7 @@ class DriversAdsController extends Controller
 
         return response()->json([
             'message' => null,
-            'has_current' => $ads[0]->status == 'in_progress',
+            'has_current' => request()->user()->driver->ads()->whereStatus('in_progress')->count() == 0 ? false : true,
             'total_ads' => $count,
             'total_profits' => round($ads->sum('profits'), 2),
             'data' => $ads
