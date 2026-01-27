@@ -37,6 +37,7 @@ class SubscribtionsController extends Controller
                 'driver_name' => $subscribtion->driver->user->username ?? '',
                 'lon' => $coordinates['lon'] ?? null,
                 'lat' => $coordinates['lat'] ?? null,
+                'is_paused' => $subscribtion->is_paused,
             ];
             unset($subscribtion->driver);
             return $formatted_driver;
