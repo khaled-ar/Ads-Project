@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Stackholders\{
     StoreStackholderRequest,
+    UpdateStackholderRequest,
 };
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,9 +39,10 @@ class StackholdersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateStackholderRequest $request, string $id)
     {
-        //
+        $user = User::where('id', $id)->with('stackholder')->first();
+        return $this->generalResponse(null, $request->update($user));
     }
 
     /**

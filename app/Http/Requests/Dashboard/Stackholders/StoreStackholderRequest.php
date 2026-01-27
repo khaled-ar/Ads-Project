@@ -30,10 +30,10 @@ class StoreStackholderRequest extends FormRequest
         return [
             'email' => ['required', 'email', 'unique:users,email'],
             'username' => ['required', 'string', 'unique:users,username'],
-            'image' => ['nullable', 'image', 'mimes:png,jpg', 'max:4096'],
             'location' => ['required', 'string'],
             'number' => ['required', 'string'],
             'commercial_number' => ['required', 'string'],
+            'company_representative' => ['required', 'string'],
             'password' => ['required', 'string',
                 Password::min(8)
                     ->max(25)
