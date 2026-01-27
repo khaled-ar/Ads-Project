@@ -28,7 +28,9 @@ class AppointmentsController extends Controller
                 'center_name' => $appointment->center->name,
                 'center_location' => $appointment->center->location,
                 'ad_name' => $appointment->ad->name,
-                'status' => $appointment->status
+                'status' => ($appointment->status == 'to do' ? 'للقيام' :
+                    ($appointment->status == 'canceled' ? 'ملغى' : 'تم')
+                    )
             ];
         });
         return $this->generalResponse($appointments);
