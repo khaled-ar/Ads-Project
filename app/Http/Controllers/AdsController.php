@@ -9,6 +9,7 @@ use App\Http\Requests\Stackholders\Ads\{
     UpdateAdRequest
 };
 use App\Models\Ad;
+use App\Models\DriverAd;
 use App\Models\DriverTrip;
 use App\Models\Region;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ class AdsController extends Controller
     public function show(ShowAdRequest $request, Ad $ad)
     {
         $ad->total_steps = DriverTrip::whereAdId($ad->id)->sum('steps') . ' / ' . $ad->km_max;
+        $ad->drivers_count = DriverAd::whereAdId($ad->id)->whereStatus('in_progress')->count() . ' / ' . $ad->drivers_number;
         $ad->load('drivers.driver.user');
         return $this->generalResponse($ad);
     }
