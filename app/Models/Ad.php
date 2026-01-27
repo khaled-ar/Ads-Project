@@ -30,7 +30,7 @@ class Ad extends Model
         'images'
     ];
 
-    protected $appends = ['from', 'images_url', 'is_full'];
+    protected $appends = ['from', 'images_url', 'is_full', 'lables'];
 
     public function getFromAttribute() {
         return $this->created_at->diffForHumans();
@@ -49,6 +49,10 @@ class Ad extends Model
         $drivers_number = $this->drivers_number;
         $current_number = DriverAd::whereAdId($this->id)->whereStatus('appointement_booking')->count();
         return $drivers_number <= $current_number;
+    }
+
+    public function getLablesAttribute() {
+        return 'الأبواب الامامية, الزجاج الخلفي';
     }
 
     protected static function boot()
