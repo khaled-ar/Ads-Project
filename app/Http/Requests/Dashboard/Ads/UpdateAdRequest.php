@@ -32,7 +32,6 @@ class UpdateAdRequest extends FormRequest
             'km_max' => ['numeric', 'gt:km_min'],
             'company_name' => ['string', 'max:100'],
             'regions' => ['string', 'max:100'],
-            // 'duration' => ['integer', 'min:1'],
             'centers' => ['string', 'max:1000'],
             'status' => ['string', 'in:قيد العمل,منتهية'],
         ];
