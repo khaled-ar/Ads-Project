@@ -72,7 +72,7 @@ class StoreRequest extends FormRequest
 
     public function check_center($ad)
     {
-        return in_array($this->center_name, explode(',', $ad->centers));
+        return in_array($this->center_name, explode('،', $ad->centers));
     }
 
     public function check_drivers_number($ad) {

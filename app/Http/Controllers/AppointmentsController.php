@@ -18,7 +18,20 @@ class AppointmentsController extends Controller
      */
     public function index()
     {
-
+        $appointments = request()->user()->driver->appointments()->with('ad')->latest()->get()->map(function($appointment) {
+            return [
+                'id' => $appointment->id,
+                'ad_id' => $appointment->ad_id,
+                'center_id' => $appointment->center_id,
+                'day' => ($appointment->center->works_days()->where('id', $appointment->works_days_id)->first())->day,
+                'time' => $appointment->time,
+                'center_name' => $appointment->center->name,
+                'center_location' => $appointment->center->location,
+                'ad_name' => $appointment->ad->name,
+                'status' => $appointment->status
+            ];
+        });
+        return $this->generalResponse($appointments);
     }
 
     /**
