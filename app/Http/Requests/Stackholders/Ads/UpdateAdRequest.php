@@ -4,6 +4,7 @@ namespace App\Http\Requests\Stackholders\ads;
 
 use App\Models\User;
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -44,10 +45,13 @@ class UpdateAdRequest extends FormRequest
         return DB::transaction(function() use ($ad) {
             $data = $this->except('images');
             $ad->update($data);
-            $admin = User::whereRole('ادمن')->first();
+            $notifiables = User::whereRole('ادمن')->get();
             $body = "لقد قام {$ad->user->username} بتعديل الاعلان رقم {$ad->id}";
             $subject = 'تعديل اعلان';
-            $admin->notify(new DatabaseNotification($body, $subject, 'ad_edition'));
+            foreach($notifiables as $notifiable) {
+                $notifiable->notify(new FcmNotification($subject, $body));
+                $notifiable->notify(new DatabaseNotification($body, $subject, 'ad_edition'));
+            }
             return $ad->id;
         });
     }

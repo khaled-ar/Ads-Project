@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Appointements;
 
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -35,6 +36,7 @@ class UpdateRequest extends FormRequest
             $subject = "لقد تمت الموافقة على حجز موعد جديد، يرجى الاطلاع";
             $body = 'يرجى التوجه الى المركز في الموعد المحدد، يمكنك الاطلاع على مواعيدك من خلال صفحة المواعيد الحاصة بك';
             $driver->notify(new DatabaseNotification($body, $subject, 'appointment_approval'));
+            $driver->notify(new FcmNotification($subject, $body));
             return $appointment->id;
         });
     }

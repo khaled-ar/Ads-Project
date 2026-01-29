@@ -46,11 +46,13 @@ class StoreAdRequest extends FormRequest
             $data = $this->except('images');
             $data['images'] = '';
             $ad = Ad::create($data);
-            $admin = User::whereRole('ادمن')->first();
+            $notifiables = User::whereRole('ادمن')->get();
             $body = "لقد تمت عملية اضافة اعلان جديد من خلال: {$ad->user->username}";
             $subject = 'لديك اعلان جديد';
-            $admin->notify(new DatabaseNotification($body, $subject, 'new_ad'));
-            $admin->notify(new FcmNotification($subject, $body));
+            foreach($notifiables as $notifiable) {
+                $notifiable->notify(new FcmNotification($subject, $body));
+                $notifiable->notify(new DatabaseNotification($body, $subject, 'new_ad'));
+            }
             return $ad->id;
         });
     }

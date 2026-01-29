@@ -59,12 +59,15 @@ class StoreRequest extends FormRequest
             $appointment = Appointement::create($this->all());
             $appointment->ForceFill(['status' => 'to do'])->save();
 
-            $admin = User::whereRole('ادمن')->first();
+            $admins = User::whereRole('ادمن')->get();
             $driver_name = $this->user()->username;
             $subject = "لقد تم حجز موعد جديد، يرجى الاطلاع";
             $body = "نود اعلامك بان السائق {$driver_name} قام بحجز موعد في مركز {$this->center_name} في الساعة {$this->time} في اليوم {$appointment->work_day->day}";
-            $admin->notify(new FcmNotification($subject, $body, ['center_id' => $center_id]));
-            Notification::send([$admin, $ad->user], new DatabaseNotification($body, $subject, 'new_appointement'));
+            $notifiables = array_merge($admins, [$ad->user]);
+            foreach($notifiables as $notifiable) {
+                $notifiable->notify(new FcmNotification($subject, $body));
+            }
+            Notification::send($notifiables, new DatabaseNotification($body, $subject, 'new_appointement'));
             return ['Your appointment has been booked successfully.', 201];
         });
     }

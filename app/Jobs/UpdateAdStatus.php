@@ -42,6 +42,7 @@ class UpdateAdStatus implements ShouldQueue
                     'status' => 'done'
                 ]);
                 $ad->user->notify(new FcmNotification('انتهاء حملة', "نود اعلامكم ان الحملة {$ad->name} قد انتهت"));
+                $ad->user->notify(new DatabaseNotification("نود اعلامكم ان الحملة {$ad->name} قد انتهت", 'انتهاء حملة', 'ad_end'));
             } else {
                 $start_date = Carbon::parse($start_end[0]);
                 $end_date = Carbon::parse($start_end[1]);

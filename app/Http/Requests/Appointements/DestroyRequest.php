@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Appointements;
 
 use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +46,7 @@ class DestroyRequest extends FormRequest
                 $body .= " ملاحظات، {$appointement->notes}";
             }
             $driver->notify(new DatabaseNotification($body, $subject, 'appointment_canceled'));
+            $driver->notify(new FcmNotification($subject, $body));
             return $appointement->id;
         });
     }
