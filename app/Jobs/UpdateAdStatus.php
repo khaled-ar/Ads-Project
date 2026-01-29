@@ -3,11 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Ad;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class UpdateAdStatus implements ShouldQueue
 {
@@ -28,7 +30,7 @@ class UpdateAdStatus implements ShouldQueue
     {
         $ads = Ad::with('drivers')->whereStatus('قيد العمل')->get();
         foreach($ads as $ad) {
-            if($ad->created_at->addDays($ad->duration) <= now()) {
+            if(Carbon::make(explode(',', $ad->duration)[1]) <= now()) {
                 $ad->update([
                     'status' => 'منتهية'
                 ]);
