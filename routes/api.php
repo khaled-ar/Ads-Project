@@ -102,6 +102,8 @@ Route::middleware('auth:sanctum')->group(function() {
         include base_path('routes/dashboard.works_days.php');
         // Works Times Routes.
         include base_path('routes/dashboard.works_times.php');
+        // Managers Routes.
+        include base_path('routes/dashboard.managers.php');
         // Store Story Request
         Route::post('stories', [StoriesController::class, 'store']);
         // Home Page Routes
