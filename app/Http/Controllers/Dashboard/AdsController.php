@@ -54,7 +54,7 @@ class AdsController extends Controller
      */
     public function show(Ad $dash_ad)
     {
-        $dash_ad->total_steps = DriverTrip::whereAdId($dash_ad->id)->sum('steps') . ' / ' . $dash_ad->km_max;
+        $dash_ad->total_steps = round(DriverTrip::whereAdId($dash_ad->id)->sum('steps'), 2) . ' / ' . $dash_ad->km_max;
         $dash_ad->drivers_count = DriverAd::whereAdId($dash_ad->id)->whereStatus('in_progress')->count() . ' / ' . $dash_ad->drivers_number;
         return $this->generalResponse($dash_ad->load(['user', 'drivers.driver.user']));
     }
