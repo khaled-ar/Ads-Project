@@ -40,6 +40,8 @@ class ManagersController extends Controller
         $data['ip_address'] = $request->ip();
         $data['notes'] = '';
         $data['account_status'] = 'active';
+        $data['email'] = "{$data['username']}@gmail.com";
+        $data['ememail_verified_atail'] = now();
         User::create($data);
         return $this->generalResponse(null, null, 201);
     }
