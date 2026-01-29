@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\DatabaseNotification;
 use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
 
@@ -24,11 +25,14 @@ class NotificationsController extends Controller
     {
         $request->validate(['title' => ['required', 'string'], 'body' => ['required', 'string']]);
         if(request('username')) {
-            User::whereUsername(request('username'))->notify(new FcmNotification($request->title, $request->body));
+            $user = User::whereUsername(request('username'));
+            $user->notify(new FcmNotification($request->title, $request->body));
+            $user->notify(new DatabaseNotification($request->body, $request->title, 'static_notification'));
             return $this->generalResponse(null);
         }
         User::whereRole('سائق')->get()->map(function($user) use($request) {
             $user->notify(new FcmNotification($request->title, $request->body));
+            $user->notify(new DatabaseNotification($request->body, $request->title, 'static_notification'));
         });
     }
 
