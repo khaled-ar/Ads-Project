@@ -23,10 +23,13 @@ class NotificationsController extends Controller
     public function store(Request $request)
     {
         $request->validate(['title' => ['required', 'string'], 'body' => ['required', 'string']]);
+        if(request('username')) {
+            User::whereUsername(request('username'))->notify(new FcmNotification($request->title, $request->body));
+            return $this->generalResponse(null);
+        }
         User::whereRole('سائق')->get()->map(function($user) use($request) {
             $user->notify(new FcmNotification($request->title, $request->body));
         });
-        return $this->generalResponse(null);
     }
 
     /**
