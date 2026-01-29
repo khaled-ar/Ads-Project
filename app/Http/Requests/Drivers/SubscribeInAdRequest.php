@@ -42,11 +42,14 @@ class SubscribeInAdRequest extends FormRequest
             }
 
             $driver->driver->ads()->create(['ad_id' => $ad->id, 'profits' => 0, 'lables' => $this->lables]);
-            $admin = User::whereRole('ادمن')->first();
+            $admins = User::whereRole('ادمن')->get();
             $body = "لقد قام {$driver->username} بتقديم طلب انضمام الى الحملة {$ad->name}";
             $subject = 'طلب انضمام جديد';
-            $admin->notify(new FcmNotification($subject, $body));
-            Notification::send([$admin, $ad->user], new DatabaseNotification($body, $subject, 'new_subscribtion'));
+            $notifiables = array_merge($admins, [$ad->user]);
+            foreach($notifiables as $notifiable) {
+                $notifiable->notify(new FcmNotification($subject, $body));
+            }
+            Notification::send($notifiables, new DatabaseNotification($body, $subject, 'new_subscribtion'));
             return ['Subscribtion Requested Successfully, Please Wait for Admin Approval.', 201];
         });
     }

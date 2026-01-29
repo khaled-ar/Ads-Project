@@ -7,6 +7,7 @@ use App\Http\Requests\Drivers\SubscribeInAdRequest;
 use App\Models\Ad;
 use App\Models\Appointement;
 use App\Models\DriverAd;
+use App\Notifications\DatabaseNotification;
 use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
 
@@ -69,7 +70,8 @@ class DriversAdsController extends Controller
             return $this->generalResponse(null, 'There is an error.', 400);
         }
 
-        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة الاعلانية قد بدأت، ولان وقتك بهمنا عوضنالك ياه!'));
+        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.'));
+        $request->user()->notify(new DatabaseNotification('الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.', 'بدء الحملة', 'ad_starts'));
         return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }
