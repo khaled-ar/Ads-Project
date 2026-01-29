@@ -62,7 +62,8 @@ class SubscribtionsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DriverAd::whereAdId($id)->whereDriverId(request('driver_id'))->delete();
+        return $this->generalResponse(null, null, 200);
     }
 
     public function driver(Request $request) {
