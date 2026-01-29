@@ -40,8 +40,9 @@ class CalculateDriversProfits implements ShouldQueue
                 $profits = round($steps * $km_price, 2);
                 DriverAd::whereAdId($driver_steps->ad_id)
                     ->whereDriverId($driver_steps->driver_id)
+                    ->whereStatus('in_progress')
                     ->update([
-                        'profits' => $profits
+                        'profits' => $profits + 5
                     ]);
             }
         } catch (\Exception $e) {

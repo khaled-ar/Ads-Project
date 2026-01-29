@@ -69,7 +69,7 @@ class DriversAdsController extends Controller
             return $this->generalResponse(null, 'There is an error.', 400);
         }
 
-        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة الاعلانية قد بدأت'));
+        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة الاعلانية قد بدأت، ولان وقتك بهمنا عوضنالك ياه!'));
         return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }
