@@ -34,7 +34,13 @@ class ResendCodeRequest extends FormRequest
         if($user->email) {
             $user->notify(new EmailVerificationCode());
         } else {
-            Whatsapp::send_code($user->driver->number);
+            if($user->role == 'سائق') {
+                Whatsapp::send_code($user->driver->number);
+            } elseif($user->role == 'معلن') {
+                Whatsapp::send_code($user->stackholder->number);
+            } else {
+                Whatsapp::send_code($user->number);
+            }
         }
         return 'The code has been sent successfully.';
     }
