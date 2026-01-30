@@ -63,7 +63,7 @@ class StoreRequest extends FormRequest
             $driver_name = $this->user()->username;
             $subject = "لقد تم حجز موعد جديد، يرجى الاطلاع";
             $body = "نود اعلامك بان السائق {$driver_name} قام بحجز موعد في مركز {$this->center_name} في الساعة {$this->time} في اليوم {$appointment->work_day->day}";
-            $notifiables = array_merge($admins, [$ad->user]);
+            $notifiables = $admins->push($ad->user);
             foreach($notifiables as $notifiable) {
                 $notifiable->notify(new FcmNotification($subject, $body));
             }

@@ -45,7 +45,7 @@ class SubscribeInAdRequest extends FormRequest
             $admins = User::whereRole('ادمن')->get();
             $body = "لقد قام {$driver->username} بتقديم طلب انضمام الى الحملة {$ad->name}";
             $subject = 'طلب انضمام جديد';
-            $notifiables = array_merge($admins, [$ad->user]);
+            $notifiables = $admins->push($ad->user);
             foreach($notifiables as $notifiable) {
                 $notifiable->notify(new FcmNotification($subject, $body));
             }
