@@ -25,7 +25,7 @@ class NotificationsController extends Controller
     {
         $request->validate(['title' => ['required', 'string'], 'body' => ['required', 'string']]);
         if(request('username')) {
-            $user = User::whereUsername(request('username'));
+            $user = User::whereUsername(request('username'))->first();
             $user->notify(new FcmNotification($request->title, $request->body));
             $user->notify(new DatabaseNotification($request->body, $request->title, 'static_notification'));
             return $this->generalResponse(null);
@@ -34,6 +34,7 @@ class NotificationsController extends Controller
             $user->notify(new FcmNotification($request->title, $request->body));
             $user->notify(new DatabaseNotification($request->body, $request->title, 'static_notification'));
         });
+        return $this->generalResponse(null);
     }
 
     /**

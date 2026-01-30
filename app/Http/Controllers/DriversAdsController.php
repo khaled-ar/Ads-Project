@@ -70,8 +70,8 @@ class DriversAdsController extends Controller
             return $this->generalResponse(null, 'There is an error.', 400);
         }
 
-        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.'));
-        $request->user()->notify(new DatabaseNotification('الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.', 'بدء الحملة', 'ad_starts'));
+        $request->user->notify(new FcmNotification('بدء الحملة', 'الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.'));
+        $request->user->notify(new DatabaseNotification('الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.', 'بدء الحملة', 'ad_starts'));
         return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }
