@@ -45,9 +45,11 @@ class UpdateDriverRequest extends FormRequest
 
     public function update($driver) {
         $user = $driver->user;
-        $user->update([
-            'username' => $this->username,
-        ]);
+        if($this->username) {
+            $user->update([
+                'username' => $this->username,
+            ]);
+        }
         if($this->file('image')) {
             if($user->image) {
                 Files::deleteFile(public_path("Images/{$user->id}/{$user->image}"));
