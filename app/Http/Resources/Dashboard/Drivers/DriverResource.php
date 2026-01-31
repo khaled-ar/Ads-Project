@@ -37,7 +37,7 @@ class DriverResource extends ResourceCollection
             'car_year' => $this->driver->car_year,
             'personal_id_image_url' => $this->driver->personal_id_image_url,
             'driving_license_image_url' => $this->driver->driving_license_image_url,
-            'car_mechanics_image_url' => $this->driver->personal_id_image_url,
+            'car_mechanics_image_url' => $this->driver->car_mechanics_image_url,
             'lables' => $this->lables,
             'total_steps' => DriverTrip::whereAdId(request('ad_id'))->whereDriverId($this->driver->id)->first()->steps ?? 0,
             'appointement' => $this->driver->appointement,
