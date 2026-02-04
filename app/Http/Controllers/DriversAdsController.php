@@ -52,6 +52,11 @@ class DriversAdsController extends Controller
             ->whereStatus('in_progress')
             ->update(['is_paused' => $request->is_paused]);
 
+        if($request->is_paused) {
+            $request->user->notify(new FcmNotification('ايقاف مؤقت للحملة', 'لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة'));
+            $request->user->notify(new DatabaseNotification('لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة', 'ايقاف مؤقت للحملة', 'start_pause_ad'));
+        }
+
         return $this->generalResponse(null, null, 200);
     }
 
