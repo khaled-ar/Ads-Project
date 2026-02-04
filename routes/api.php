@@ -123,7 +123,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('stackholders/subscribtions/coordinates', [SubscribtionsController::class, 'coordinates'])->name('subscribtions.coordinates');
 
     // Drivers Routes.
-    Route::prefix('drivers')->middleware(['driver', /*'verified',*/ 'active'])->group(function() {
+    Route::prefix('drivers')->middleware(['driver', 'verified', 'active'])->group(function() {
         // Ads Routes.
         include base_path('routes/drivers.ads.php');
         // Tracking Routes
