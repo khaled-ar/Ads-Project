@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profits;
+use App\Models\User;
+use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ProfitsController extends Controller
 {
@@ -62,7 +66,13 @@ class ProfitsController extends Controller
         ]);
         $request->user()->driver->trips()->delete();
         $request->user()->driver->ads()->whereStatus('done')->update(['profits' => 0]);
-
+        $notifiables = User::whereRole('ادمن')->get();
+        $body = "لقد قام {$request->user()->username} بتقديم طلب سحب ارباح";
+        $subject = 'طلب سحب ارباح جديد';
+        foreach($notifiables as $notifiable) {
+            $notifiable->notify(new FcmNotification($subject, $body));
+        }
+        Notification::send($notifiables, new DatabaseNotification($body, $subject, 'new_profits_request'));
         return $this->generalResponse(null, 'Your Request Sent To Admin Successfully, PLease Wait for 24 Hours Maximum.');
     }
 

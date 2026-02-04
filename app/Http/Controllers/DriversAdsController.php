@@ -53,8 +53,8 @@ class DriversAdsController extends Controller
             ->update(['is_paused' => $request->is_paused]);
 
         if($request->is_paused == 1) {
-            $request->user->notify(new FcmNotification('ايقاف مؤقت للحملة', 'لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة'));
-            $request->user->notify(new DatabaseNotification('لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة', 'ايقاف مؤقت للحملة', 'start_pause_ad'));
+            $request->user()->notify(new FcmNotification('ايقاف مؤقت للحملة', 'لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة'));
+            $request->user()->notify(new DatabaseNotification('لقد قمت بايقاف الحملة مؤقتاً، لذا تم ايقاف عداد الخطوات مؤقتا حتى تقوم باعادة تشفيل الحملة', 'ايقاف مؤقت للحملة', 'start_pause_ad'));
         }
 
         return $this->generalResponse(null, null, 200);
@@ -75,8 +75,8 @@ class DriversAdsController extends Controller
             return $this->generalResponse(null, 'There is an error.', 400);
         }
 
-        $request->user->notify(new FcmNotification('بدء الحملة', 'الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.'));
-        $request->user->notify(new DatabaseNotification('الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.', 'بدء الحملة', 'ad_starts'));
+        $request->user()->notify(new FcmNotification('بدء الحملة', 'الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.'));
+        $request->user()->notify(new DatabaseNotification('الحملة بدأت، ولان وقتك يهمنا اضفنا لك 5 دولار، ستحصل عليها عند البدء بالرحلة.', 'بدء الحملة', 'ad_starts'));
         return $this->generalResponse(null, 'Done Successfully.', 200);
     }
 }
