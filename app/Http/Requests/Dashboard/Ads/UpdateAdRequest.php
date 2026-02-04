@@ -34,6 +34,7 @@ class UpdateAdRequest extends FormRequest
             'regions' => ['string', 'max:100'],
             'centers' => ['string', 'max:1000'],
             'status' => ['string', 'in:قيد العمل,منتهية'],
+            'steps_sum' => ['numeric'],
         ];
     }
 }

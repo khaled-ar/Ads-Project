@@ -42,6 +42,7 @@ class StoreAdRequest extends FormRequest
             'images.*' => ['image', 'mimes:png,jpg', 'max:4096'],
             'country' => ['required', 'string', 'exists:countries,name'],
             'city' => ['required', 'string', 'exists:cities,name'],
+            'steps_sum' => ['required', 'numeric'],
         ];
     }
 
