@@ -14,7 +14,10 @@ return [
     |
     */
 
-    'whatsapp_api_key' => env('WHATSAPP_API_KEY'),
+    'whatsapp_api_v1' => env('WHATSAPP_API_V1'),
+    'whatsapp_base_url' => env('WHATSAPP_BASE_URL'),
+    'whatsapp_access_token' => env('WHATSAPP_ACCESS_TOKEN'),
+    'whatsapp_session_id' => env('WHATSAPP_SESSION_ID'),
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
