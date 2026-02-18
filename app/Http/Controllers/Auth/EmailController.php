@@ -8,6 +8,8 @@ use App\Http\Requests\Auth\{
 };
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\DatabaseNotification;
+use App\Notifications\FcmNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -30,6 +32,16 @@ class EmailController extends Controller
         $user->update([
             'email_verified_at' => now()
         ]);
+        $notifiables = User::whereRole('ادمن')->get();
+        $subject = "لقد تم انشاء حساب سائق جديد، يرجى الاطلاع";
+        $body = [
+            'driver_name' => $user->username,
+            'driver_number' => $user->driver->number,
+        ];
+        foreach($notifiables as $notifiable) {
+            $notifiable->notify(new FcmNotification($subject, "يريد {$user->username} الانضمام الى النظام"));
+            $notifiable->notify(new DatabaseNotification($body, $subject, 'new_driver'));
+        }
         Cache::forget($user->email ?? $user->driver->number);
         return $this->generalResponse(null, 'Account Verified Successfully');
     }

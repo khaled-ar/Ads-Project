@@ -82,16 +82,6 @@ class RegisterRequest extends FormRequest
             } else {
                 Whatsapp::send_code($this->number);
             }
-            $notifiables = User::whereRole('ادمن')->get();
-            $subject = "لقد تم انشاء حساب سائق جديد، يرجى الاطلاع";
-            $body = [
-                'driver_name' => $user->username,
-                'driver_number' => $user->driver->number,
-            ];
-            foreach($notifiables as $notifiable) {
-                $notifiable->notify(new FcmNotification($subject, "يريد {$user->username} الانضمام الى النظام"));
-                $notifiable->notify(new DatabaseNotification($body, $subject, 'new_driver'));
-            }
             return 'Please confirm your account now, your membership request is under review by the system administrator.';
         });
     }

@@ -25,7 +25,7 @@ class DriversController extends Controller
      */
     public function index()
     {
-        $drivers = User::with('driver')->whereRole('سائق')->orderBy('account_status')->get();
+        $drivers = User::with('driver')->whereRole('سائق')->whereNotNull('email_verified_at')->orderBy('account_status')->get();
         return $this->generalResponse($drivers);
     }
 
