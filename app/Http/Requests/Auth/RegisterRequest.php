@@ -37,7 +37,7 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'between:3,15', 'unique:users,username'],
             'email' => ['nullable', 'required_without:number', 'email', 'unique:users,email'],
             'place_of_residence' => ['string', 'exists:regions,name'],
-            'work_status' => ['required', 'string', 'in:سائق حر,يعمل ضمن برنامج توصيل,لا يعمل ضمن أي برنامج'],
+            'work_status' => ['required', 'string', 'in:سائق حر,يعمل ضمن برنامج توصيل,يعمل ضمن اجرة تكسي'],
             'program_name' => ['required_if:work_status,يعمل ضمن برنامج توصيل', 'string', 'exists:delivery_programs,name'],
             'birth_date' => ['required', 'date'],
             'km_per_day' => ['required', 'integer', 'min:1'],
