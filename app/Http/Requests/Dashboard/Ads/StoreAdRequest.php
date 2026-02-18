@@ -43,6 +43,7 @@ class StoreAdRequest extends FormRequest
             'country' => ['required', 'string', 'exists:countries,name'],
             'city' => ['required', 'string', 'exists:cities,name'],
             'steps_sum' => ['required', 'numeric'],
+            'user_id' => ['required', 'integer', 'exists:users,id']
         ];
     }
 

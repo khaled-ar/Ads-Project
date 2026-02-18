@@ -61,8 +61,8 @@ class Ad extends Model
 
         static::creating(function ($ad) {
             $user = request()->user();
-            $ad->user_id = $user->id;
             if($user->role != 'ادمن') {
+                $ad->user_id = $user->id;
                 $ad->company_name = $ad->user->username;
                 $ad->terms = '';
                 $ad->drivers_number = 0;
