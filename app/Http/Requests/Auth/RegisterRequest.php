@@ -43,7 +43,7 @@ class RegisterRequest extends FormRequest
             'km_per_day' => ['required', 'integer', 'min:1'],
             'km_per_month' => ['required', 'integer', 'min:1'],
             'number' => ['nullable', 'required_without:email', 'string', 'unique:drivers,number'],
-            'nationality' => ['required', 'string', 'in:سوري,مصري'],
+            'nationality' => ['required', 'string', 'in:سوري,سوري فلسطيني'],
             'gender' => ['required', 'string', 'in:انثى,ذكر'],
             'car_model' => ['required', 'string', 'exists:cars,name'],
             'car_color' => ['required', 'string', 'between:3,15'],
