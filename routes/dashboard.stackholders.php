@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('stackholders', StackholdersController::class);
-
+Route::get('get-all/stackholders', [StackholdersController::class, 'get_all'])->name('dash.stackholders.get_all');

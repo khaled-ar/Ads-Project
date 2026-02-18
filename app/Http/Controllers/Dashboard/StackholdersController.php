@@ -53,4 +53,8 @@ class StackholdersController extends Controller
         User::whereId($id)->delete();
         return $this->generalResponse(null, 'Stackholder Deleted Successfully.', 200);
     }
+
+    public function get_all() {
+        return $this->generalResponse(User::whereRole('معلن')->get(['id', 'username']), null, 200);
+    }
 }
