@@ -28,7 +28,7 @@ class Center extends Model
         return $this->hasMany(Appointement::class)->whereStatus('to do');
     }
 
-    public function region() {
-        return $this->belongsTo(Region::class)->select(['id', 'name']);
+    public function city() {
+        return $this->belongsTo(City::class)->select(['id', 'name']);
     }
 }
