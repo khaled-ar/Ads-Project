@@ -60,7 +60,7 @@ class StoreRequest extends FormRequest
             $appointment->ForceFill(['status' => 'to do'])->save();
 
             $admins = User::whereRole('ادمن')->get();
-            $driver_name = $this->user()->username;
+            $driver_name = $this->user()->driver->fullname;
             $subject = "لقد تم حجز موعد جديد، يرجى الاطلاع";
             $body = "نود اعلامك بان السائق {$driver_name} قام بحجز موعد في مركز {$this->center_name} في الساعة {$this->time} في اليوم {$appointment->work_day->day}";
             $notifiables = $admins->push($ad->user);
