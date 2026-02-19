@@ -29,7 +29,7 @@ class GetSingleCenter extends JsonResource
         return [
             'center_name' => $this->name,
             'center_location' => $this->location,
-            'region' => $this->region,
+            'city' => $this->city,
             'appointements' => $new_appointements,
             'works_days' => $this->works_days
         ];
