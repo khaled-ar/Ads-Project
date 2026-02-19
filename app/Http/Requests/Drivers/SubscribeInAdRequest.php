@@ -43,7 +43,7 @@ class SubscribeInAdRequest extends FormRequest
 
             $driver->driver->ads()->create(['ad_id' => $ad->id, 'profits' => 0, 'lables' => $this->lables]);
             $admins = User::whereRole('ادمن')->get();
-            $body = "لقد قام {$driver->username} بتقديم طلب انضمام الى الحملة {$ad->name}";
+            $body = "لقد قام {$driver->driver->fullname} بتقديم طلب انضمام الى الحملة {$ad->name}";
             $subject = 'طلب انضمام جديد';
             $notifiables = $admins->push($ad->user);
             foreach($notifiables as $notifiable) {
