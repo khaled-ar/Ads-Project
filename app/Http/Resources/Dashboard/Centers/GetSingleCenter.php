@@ -21,7 +21,7 @@ class GetSingleCenter extends JsonResource
                 'day' => $appointement->work_day->day,
                 'time' => $appointement->time,
                 // 'status' => $appointement->status,
-                'driver_name' => $appointement->driver->user->username,
+                'driver_name' => $appointement->driver->fullname,
                 'driver_image_url' => $appointement->driver->user->image_url,
             ];
         }

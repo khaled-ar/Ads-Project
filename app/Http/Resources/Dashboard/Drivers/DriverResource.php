@@ -21,6 +21,7 @@ class DriverResource extends ResourceCollection
         return [
             'id' => $this->driver->id,
             'user_id' => $this->driver->user_id,
+            'fullname' => $this->driver->fullname,
             'username' => $this->driver->user->username,
             'account_status' => $this->driver->user->account_status,
             'place_of_residence' => $this->driver->place_of_residence,
