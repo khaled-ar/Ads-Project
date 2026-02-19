@@ -19,28 +19,26 @@ class AppointementsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $times = [];
-
         $works_days = $this->center->works_days;
         $center_name = $this->center->name;
         $center_location = $this->center->location;
 
-        foreach($works_days as $day) {
-            foreach($day->works_times as $time) {
-                $start = (int)(explode(':', $time->start)[0]);
-                $end = (int)(explode(':', $time->end)[0]);
-                $times = $this->generateTimeRange($start, $end-1);
+        foreach ($works_days as $day) {
+            $all_times = []; 
+
+            foreach ($day->works_times as $time) {
+                $times = $this->generateTimeRange($time->start, $time->end);
+                $all_times = array_merge($all_times, $times);
             }
-            // Fetch appointments for the current day and center
+
             $appointments = Appointement::where('works_days_id', $day->id)
                 ->where('center_id', $this->center->id)
                 ->where('status', '<>', 'canceled')
                 ->pluck('time')
                 ->toArray();
 
-            $available_times = array_diff($times, $appointments);
+            $available_times = array_diff($all_times, $appointments);
 
-            // Assign available times back to the day object
             $day->available_times = array_values($available_times);
             unset($day->works_times);
         }
@@ -52,24 +50,46 @@ class AppointementsResource extends JsonResource
         ];
     }
 
-    function generateTimeRange($startHour, $endHour)
+    /**
+     * Generate time range between start and end times
+     *
+     * @param string $startTime Start time in format "H:i" (e.g., "10:30")
+     * @param string $endTime End time in format "H:i" (e.g., "16:30")
+     * @return array
+     */
+    function generateTimeRange($startTime, $endTime)
     {
         $times = [];
 
-        $startTime = Carbon::createFromTime($startHour, 0, 0); // 24-hour format
-        $endTime = Carbon::createFromTime($endHour, 0, 0); // 24-hour format
+        $start_parts = explode(':', $startTime);
+        $end_parts = explode(':', $endTime);
 
-        // If end time is earlier than start time, add 1 day
-        if ($endTime->lessThan($startTime)) {
-            $endTime->addDay();
+        $start_hour = (int)$start_parts[0];
+        $start_minute = (int)($start_parts[1] ?? 0);
+
+        $end_hour = (int)$end_parts[0];
+        $end_minute = (int)($end_parts[1] ?? 0);
+
+        if ($end_hour < $start_hour && $end_hour < 12) {
+            $end_hour += 12;
         }
 
-        while ($startTime->lessThanOrEqualTo($endTime)) {
-            $times[] = $startTime->format('g:i A'); // Still output as 12-hour format
-            $startTime->addHour();
+        if ($start_hour > 12 && $end_hour < $start_hour && $end_hour < 12) {
+            $end_hour += 24;
+        }
+
+        $start = Carbon::createFromTime($start_hour, $start_minute, 0);
+        $end = Carbon::createFromTime($end_hour, $end_minute, 0);
+
+        if ($end->lessThan($start)) {
+            $end->addDay();
+        }
+
+        while ($start->lessThan($end)) {
+            $times[] = $start->format('g:i A');
+            $start->addHour();
         }
 
         return $times;
     }
 }
-
