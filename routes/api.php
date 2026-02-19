@@ -61,7 +61,7 @@ Route::get('regions', fn () => [
 // This route to get all avaliable lables to use it in subscribe in ad request.
 Route::get('lables', fn () => ['data' => Lable::all()]);
 // This route to get all avaliable centers to use it in ad adding request.
-Route::get('centers', fn () => ['data' => Center::whereRegionId(request('region_id'))->with('region')->get()]);
+Route::get('centers', fn () => ['data' => Center::whereCityId(request('city_id'))->with('city')->get()]);
 
 Route::middleware('auth:sanctum')->group(function() {
 

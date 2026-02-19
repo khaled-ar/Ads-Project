@@ -26,17 +26,17 @@ class UpdateAdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:100', 'unique:ads,name,' . request()->ad->id . ',id'],
-            'description' => ['string', 'max:1000'],
-            'terms' => ['string', 'max:1000'],
+            'name' => ['string', 'unique:ads,name,' . request()->ad->id . ',id'],
+            'description' => ['string'],
+            'terms' => ['string'],
             'drivers_number' => ['integer', 'min:1'],
             'budget' => ['numeric'],
             'km_price' => ['numeric'],
             'km_min' => ['numeric', 'min:1'],
             'km_max' => ['numeric', 'gt:km_min'],
-            'company_name' => ['string', 'max:100'],
-            'regions' => ['string', 'max:100'],
-            'centers' => ['string', 'max:1000'],
+            'company_name' => ['string'],
+            'regions' => ['string'],
+            'centers' => ['string'],
             'status' => ['string', 'in:قيد العمل,منتهية']
         ];
     }

@@ -23,8 +23,8 @@ class StoreCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:200', 'unique:centers,name'],
-            'region_id' => ['required', 'integer', 'exists:regions,id'],
+            'name' => ['required', 'string', 'unique:centers,name'],
+            'city_id' => ['required', 'integer', 'exists:cities,id'],
             'location' => ['required', 'string'],
         ];
     }

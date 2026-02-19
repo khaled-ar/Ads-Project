@@ -17,8 +17,8 @@ class UpdateCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:200', 'unique:centers,name,' . $this->center->id . ',id'],
-            'region_id' => ['nullable', 'integer', 'exists:regions,id'],
+            'name' => ['string', 'unique:centers,name,' . $this->center->id . ',id'],
+            'city_id' => ['nullable', 'integer', 'exists:cities,id'],
             'location' => ['nullable', 'string'],
         ];
     }

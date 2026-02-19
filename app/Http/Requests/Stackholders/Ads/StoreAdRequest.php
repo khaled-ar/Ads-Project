@@ -29,8 +29,8 @@ class StoreAdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100', 'unique:ads,name'],
-            'description' => ['required', 'string', 'max:1000'],
+            'name' => ['required', 'string', 'unique:ads,name'],
+            'description' => ['required', 'string'],
             'budget' => ['required', 'numeric'],
             'country' => ['required', 'string', 'exists:countries,name'],
             'city' => ['required', 'string', 'exists:cities,name'],

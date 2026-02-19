@@ -26,18 +26,18 @@ class StoreAdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100', 'unique:ads,name'],
-            'description' => ['required', 'string', 'max:1000'],
+            'name' => ['required', 'string', 'unique:ads,name'],
+            'description' => ['required', 'string'],
             'terms' => ['required', 'string', 'max:1000'],
             'drivers_number' => ['required', 'integer', 'min:1'],
             'budget' => ['required', 'numeric'],
             'km_price' => ['required', 'numeric'],
             'km_min' => ['required', 'numeric', 'min:1'],
             'km_max' => ['required', 'numeric', 'gt:km_min'],
-            'company_name' => ['required', 'string', 'max:100'],
-            'regions' => ['required', 'string', 'max:100'],
+            'company_name' => ['required', 'string'],
+            'regions' => ['required', 'string'],
             'duration' => ['required', 'string'],
-            'centers' => ['required', 'string', 'max:1000'],
+            'centers' => ['required', 'string'],
             'images' => ['required', 'array', 'between:1,10'],
             'images.*' => ['image', 'mimes:png,jpg', 'max:4096'],
             'country' => ['required', 'string', 'exists:countries,name'],
