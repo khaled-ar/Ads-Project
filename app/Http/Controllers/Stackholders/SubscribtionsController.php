@@ -34,7 +34,7 @@ class SubscribtionsController extends Controller
             $coordinates = (new GPS())->get($subscribtion->driver_id);
             $formatted_driver = [
                 'driver_id' => $subscribtion->driver_id,
-                'driver_name' => $subscribtion->driver->user->username ?? '',
+                'driver_name' => $subscribtion->driver->fullname ?? '',
                 'lon' => $coordinates['lon'] ?? null,
                 'lat' => $coordinates['lat'] ?? null,
                 'is_paused' => $subscribtion->is_paused,
