@@ -30,7 +30,7 @@ class ProfitsController extends Controller
                 'id' => $profit->id,
                 'account_id' => $profit->account_id,
                 'profits' => round($profit->profits, 2),
-                'driver_name' => $profit->driver->user->username,
+                'driver_name' => $profit->driver->fullname,
                 'driver_number' => $profit->driver->number,
                 'driver_place' => $profit->driver->place_of_residence,
                 'driver_nationality' => $profit->driver->nationality,
@@ -67,7 +67,7 @@ class ProfitsController extends Controller
         $request->user()->driver->trips()->delete();
         $request->user()->driver->ads()->whereStatus('done')->update(['profits' => 0]);
         $notifiables = User::whereRole('ادمن')->get();
-        $body = "لقد قام {$request->user()->username} بتقديم طلب سحب ارباح";
+        $body = "لقد قام {$request->user()->driver->fullname} بتقديم طلب سحب ارباح";
         $subject = 'طلب سحب ارباح جديد';
         foreach($notifiables as $notifiable) {
             $notifiable->notify(new FcmNotification($subject, $body));
